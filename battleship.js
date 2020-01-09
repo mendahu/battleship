@@ -69,9 +69,14 @@ const getOccupiedTiles = function(shipID) {
   }
 };
 
-//Takes a ship id an returns true if ship is still alive and false if dead.
-const getShipStatus = function(shipID) {
+//checks a coordinate on a player's map to see if it has been shot at already
+const checkForHit = function(coordinate, gameId, playerId) {
+  //
+};
 
+//Takes an array of ship positions an returns true if some are unhit and false if all are hit
+const getShipStatus = function(shipPositions) {
+  //
 };
 
 let games = {
@@ -93,7 +98,7 @@ let games = {
             coordinate: coordinate,
             direction: direction,
             occupiedTiles: getOccupiedTiles(this),
-            status: getShipStatus(this)
+            status: getShipStatus(this.occupiedTiles)
           };
         }
       },
@@ -169,6 +174,7 @@ players.addPlayer("Amy");
 players.addPlayer("Fitz");
 players.addPlayer("Juno");
 console.log(players);
+
 
 /*
 countGames(uid, type) = function {
