@@ -3,37 +3,74 @@ const generateUid = function() {
   return Math.floor((1 + Math.random()) * 0x100000000).toString(16).substring(1);
 };
 
-//takes a userID and returns an array of all the gameIDs they've played
-const getGameList = function(playerId) {
-
-  //start with empty game list
-  let gameList = [];
-
-  //Loop through games
-  for (const game in games) {
-
-    //if either playerID matches, push the game ID to the list
-    if ((game.players[0] === playerId) || (game.players[1] === playerId)) {
-      gameList.push(game);
-    }
-  }
-
-  return gameList;
+//A library of ship size definitions
+let shipLibrary = {
+  carrier: 5,
+  battleship: 4,
+  submarine: 3,
+  cruiser: 3,
+  patrol: 2
 };
 
-//creates an object to house players
-//players.addPlayer is a method to create a new UID
-let players = {
+//Gets the size of a ship based on its class
+const getShipSize = shipClass => shipLibrary[shipClass];
 
-  addPlayer: function(name) {
-    //generates a new player object with a UID
-    this[generateUid()] = {
-      name: name, //player's name string
-      games: getGameList(this),
-      wins: getGameCount(this, "wins"),
-      losses: getGameCount(this, "losses")
-    };
+//Get column from a coordinate
+const getColumn = coordinate => coordinate[0];
+
+//Get row from a coordinate
+const getRow = coordinate => coordinate[1];
+
+//generates a row of coordinates horizontally to the right based on a starting position and quantity
+const generateRow = function(coordinate, quantity) {
+  
+  //create array to house coordinates
+  let rowArray = [];
+
+  //Loop an amount of times passed through and push the new coordinate to the array
+  for (let i = 0; i < quantity; i++) {
+    rowArray.push(getColumn(coordinate) + (getRow(coordinate) + i));
   }
+
+  return rowArray;
+};
+
+//takes one letter and returns the nth next letter in the alphabet
+//does not work past "z" but this is not necessary for this exercise
+const getNthLetterFrom = function(letter, n) {
+  return String.fromCharCode(letter.charCodeAt(0) + n);
+};
+
+//genarates a column of coordinates vertically downward from a starting position based on quantity
+const generateColumn = function(coordinate, quantity) {
+
+  //create array to house coordinates
+  let columnArray = [];
+
+  //Loop an amount of times passed through and push the new coordinate to the array
+  for (let i = 0; i < quantity; i++) {
+    columnArray.push(getNthLetterFrom(getColumn(coordinate), i) + getRow(coordinate));
+  }
+
+  return columnArray;
+};
+
+//returns an array of tiles that are occupied given a ship id
+const getOccupiedTiles = function(shipID) {
+
+  //set the ship's starting coordinate to a variable
+  let coordinate = this.coordinate;
+
+  //check direction and return the appropriate array
+  if (this.direction === "horizontal") {
+    return generateRow(coordinate, getShipSize(shipID));
+  } else {
+    return generateColumn(coordinate, getShipSize(shipID));
+  }
+};
+
+//Takes a ship id an returns true if ship is still alive and false if dead.
+const getShipStatus = function(shipID) {
 
 };
 
@@ -52,10 +89,11 @@ let games = {
         addShip: function(shipClass, coordinate, direction, playerUID) {
           this[playerUID][generateUid()] = {
             class: shipClass,
+            size: getShipSize(),
             coordinate: coordinate,
             direction: direction,
-            occupiedTiles: getOccupiedTiles(this, this.direction),
-            status: getStatus(this)
+            occupiedTiles: getOccupiedTiles(this),
+            status: getShipStatus(this)
           };
         }
       },
@@ -72,6 +110,65 @@ let games = {
     };
   }
 };
+
+//takes a userID and returns an array of all the gameIDs they've played
+const getGameList = function(playerId) {
+
+  //start with empty game list
+  let gameList = [];
+
+  //Loop through games
+  for (const game in games) {
+    //if either playerID matches, push the game ID to the list
+    if ((game.players[0] === playerId) || (game.players[1] === playerId)) {
+      gameList.push(game);
+    }
+  }
+  return gameList;
+};
+
+//takes the userID and returns a number of wins
+const getWinCount = function(playerId) {
+
+  //start with empty win count
+  let winCount = 0;
+
+  //loop through game list
+  for (const game in games) {
+    //if winner of game matches player id, increment count
+    if (game.winner === playerId) {
+      winCount++;
+    }
+  }
+
+  return winCount;
+};
+
+//creates an object to house players
+//players.addPlayer is a method to create a new UID
+let players = {
+  0x000000: { //This is the computer player
+    name: "Computer",
+    games: getGameList(this),
+    wins: getWinCount(this),
+  },
+  addPlayer: function(name) {
+    //generates a new player object with a UID
+    this[generateUid()] = {
+      name: name, //player's name string
+      games: getGameList(this),
+      wins: getWinCount(this),
+    };
+  }
+
+};
+
+//Test scripts to create data
+players.addPlayer("Jake");
+players.addPlayer("Amy");
+players.addPlayer("Fitz");
+players.addPlayer("Juno");
+console.log(players);
 
 /*
 countGames(uid, type) = function {
