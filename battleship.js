@@ -3,12 +3,38 @@ const generateUid = function() {
   return Math.floor((1 + Math.random()) * 0x100000000).toString(16).substring(1);
 };
 
+//takes a userID and returns an array of all the gameIDs they've played
+const getGameList = function(playerId) {
+
+  //start with empty game list
+  let gameList = [];
+
+  //Loop through games
+  for (const game in games) {
+
+    //if either playerID matches, push the game ID to the list
+    if ((game.players[0] === playerId) || (game.players[1] === playerId)) {
+      gameList.push(game);
+    }
+  }
+
+  return gameList;
+};
+
+//creates an object to house players
+//players.addPlayer is a method to create a new UID
 let players = {
+
   addPlayer: function(name) {
+    //generates a new player object with a UID
     this[generateUid()] = {
-      name: name
+      name: name, //player's name string
+      games: getGameList(this),
+      wins: getGameCount(this, "wins"),
+      losses: getGameCount(this, "losses")
     };
   }
+
 };
 
 let games = {
@@ -24,7 +50,13 @@ let games = {
         playerId1: {},
         playerId2: {},
         addShip: function(shipClass, coordinate, direction, playerUID) {
-
+          this[playerUID][generateUid()] = {
+            class: shipClass,
+            coordinate: coordinate,
+            direction: direction,
+            occupiedTiles: getOccupiedTiles(this, this.direction),
+            status: getStatus(this)
+          };
         }
       },
       shots: {
