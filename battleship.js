@@ -129,6 +129,7 @@ let games = {
         playerId1: [],
         playerId2: [],
         makeShot: function(playerId, coordinate) {
+          this[playerId].push(coordinate);
         },
         incrementTurnCount: function() {
           this.turnCount++;
