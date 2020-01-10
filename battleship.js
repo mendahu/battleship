@@ -145,9 +145,13 @@ let games = {
   
     //Loop through games
     for (const game in this) {
+
+      //wrap with a check to see if game.player exists (for when there are no records of games)
       //if either playerID matches, push the game ID to the list
-      if ((game.players[0] === playerId) || (game.players[1] === playerId)) {
-        gameList.push(game);
+      if (game.player !== undefined) {
+        if ((game.players[0] === playerId) || (game.players[1] === playerId)) {
+          gameList.push(game);
+        }
       }
     }
     return gameList;
@@ -190,13 +194,6 @@ let players = {
   }
 
 };
-
-//Test scripts to create data
-players.addPlayer("Jake");
-players.addPlayer("Amy");
-players.addPlayer("Fitz");
-players.addPlayer("Juno");
-console.log(players);
 
 
 /*
