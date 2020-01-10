@@ -3,7 +3,9 @@
   <head>
     <link href="reset.css" rel="stylesheet" type="text/css">
     <link href="styles.css" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="battleship.js"></script>
+    <script src="dom-manipulator.js"></script>
     <title>Battleship!</title>
   </head>
   <body>
@@ -15,7 +17,31 @@
       </header>
 
       <section id="game-container" class="narrow-body-item">
-        <p>Game goes here</p>
+        <div id="new-game-form-container">
+          <form id="new-game-form-1">
+            <span>Enter your name:</span><br>
+            <input type="text" id="new-game-player-name">
+            <hr>
+            <span>Select Number of Ships</span>
+            <select id="new-game-ship-count">
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+            </select><br>
+            <span>Select Shots per Turn</span>
+            <select id="new-game-shots-per-game">
+              <option value="1">1</option>
+              <option value="1">2</option>
+            </select><br>
+            <span>Select Board Size</span>
+            <select id="new-game-board-size">
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+            </select><br>
+            <input class="user-button" type="submit" value="Place Ships" id="game-creator-button">
+          </form>
+        </div>
       </section>
 
       <footer class="wide-body-item">

@@ -29,7 +29,19 @@ footer {
   max-width: 1200px;
   margin: 0px auto 0px auto;
 }
-
+#new-game-form-container {
+  max-width: 90%;
+  width: 500px;
+  margin: 0px auto 0px auto;
+}
+select {
+  background-color: white;
+}
+.user-button {
+  background-color: black;
+  color: white;
+  padding: 20px;
+}
 h1 {
   font-size: 3.6em;
   margin-bottom: 1em;
