@@ -137,24 +137,23 @@ let games = {
         turnCount: 0
       },
     };
-  }
-};
-
-//takes a userID and returns an array of all the gameIDs they've played
-const getGameList = function(playerId) {
-
-  //start with empty game list
-  let gameList = [];
-
-  //Loop through games
-  for (const game in games) {
-    //if either playerID matches, push the game ID to the list
-    if ((game.players[0] === playerId) || (game.players[1] === playerId)) {
-      gameList.push(game);
+  },
+  getGameList: function(playerId) {
+    //takes a userID and returns an array of all the gameIDs they've played
+    //start with empty game list
+    let gameList = [];
+  
+    //Loop through games
+    for (const game in this) {
+      //if either playerID matches, push the game ID to the list
+      if ((game.players[0] === playerId) || (game.players[1] === playerId)) {
+        gameList.push(game);
+      }
     }
+    return gameList;
   }
-  return gameList;
 };
+
 
 //takes the userID and returns a number of wins
 const getWinCount = function(playerId) {
@@ -178,14 +177,14 @@ const getWinCount = function(playerId) {
 let players = {
   0x00: { //This is the computer player
     name: "Computer",
-    games: getGameList(this),
+    games: games.getGameList(this),
     wins: getWinCount(this),
   },
   addPlayer: function(name) {
     //generates a new player object with a UID
     this[generateUid()] = {
       name: name, //player's name string
-      games: getGameList(this),
+      games: games.getGameList(this),
       wins: getWinCount(this),
     };
   }
