@@ -1,0 +1,45 @@
+html {
+  font-size: 10px;
+  color: #000000;
+  background-color: #000000;
+}
+p {
+  font-size: 1.6em;
+  margin: 1em 0em 1em 0em;
+}
+main {
+  max-width: 1300px;
+  margin: 0px auto 0px auto;
+}
+header, footer, #game-container {
+  padding: 1em;
+}
+header {
+  border-radius: 0px 0px 15px 15px;
+}
+footer {
+  border-radius: 15px 15px 0px 0px;
+}
+.wide-body-item {
+  background-color: grey;
+  max-width: 1300px;
+}
+.narrow-body-item {
+  background-color: lightgrey;
+  max-width: 1200px;
+  margin: 0px auto 0px auto;
+}
+
+h1 {
+  font-size: 3.6em;
+  margin-bottom: 1em;
+  font-weight: bold;
+}
+.subtitle {
+  font-size: 2.0em;
+  font-style: italic;
+}
+.footer-text {
+  font-size: 1.6em;
+  font-style: italic;
+}
