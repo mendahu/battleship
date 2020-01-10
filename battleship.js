@@ -1,6 +1,6 @@
-//returns an 8-digit unique ID for use with games, users, and ships
+//returns an 12-digit unique ID for use with games, users, and ships
 const generateUid = function() {
-  return Math.floor((1 + Math.random()) * 0x100000000).toString(16).substring(1);
+  return Math.floor((1 + Math.random()) * 0x1000000000000).toString(16).substring(1);
 };
 
 //A library of ship size definitions
@@ -69,9 +69,21 @@ const getOccupiedTiles = function(shipID) {
   }
 };
 
+//checks a playerId and returns their opponent playerId given a gameId
+const getOpponentID = function(playerId, gameId) {
+  let players = games[gameId].players.filter(player => player === playerId);
+  return players[0];
+};
+
 //checks a coordinate on a player's map to see if it has been shot at already
 const checkForHit = function(coordinate, gameId, playerId) {
-  //
+  let shots = games[gameId].shots[getOpponentID(playerId)];
+  shots.forEach(tile => {
+    if (tile === coordinate) {
+      return true;
+    }
+  });
+  return false;
 };
 
 //Takes an array of ship positions an returns true if some are unhit and false if all are hit
@@ -152,7 +164,7 @@ const getWinCount = function(playerId) {
 //creates an object to house players
 //players.addPlayer is a method to create a new UID
 let players = {
-  0x000000: { //This is the computer player
+  0x00: { //This is the computer player
     name: "Computer",
     games: getGameList(this),
     wins: getWinCount(this),
