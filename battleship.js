@@ -88,7 +88,18 @@ const checkForHit = function(coordinate, gameId, playerId) {
 
 //Takes an array of ship positions an returns true if some are unhit and false if all are hit
 const getShipStatus = function(shipPositions) {
-  //
+  //empty hit count to start
+  let hitCount = 0;
+
+  //check each ship position tile for a hit, log to hitCount if true
+  shipPositions.forEach(coordinate => {
+    if (checkForHit(coordinate)) {
+      hitCount++;
+    }
+  });
+
+  //return true if ship is still alive, false if hits = size
+  return (hitCount < shipPositions.length);
 };
 
 let games = {
