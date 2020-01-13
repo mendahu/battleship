@@ -19,7 +19,7 @@ const getShipSize = shipClass => shipLibrary[shipClass];
 const getColumn = coordinate => coordinate[0];
 
 //Get row from a coordinate
-const getRow = coordinate => coordinate[1];
+const getRow = coordinate => Number(coordinate[1]);
 
 //generates a row of coordinates horizontally to the right based on a starting position and quantity
 const generateRow = function(coordinate, quantity) {
@@ -193,6 +193,17 @@ let players = {
     };
   }
 
+};
+
+module.exports = {
+  addPlayer: players.addPlayer,
+  addGame: games.addGame,
+  getGamesList: games.getGameList,
+  generateUid: generateUid,
+  getShipSize: getShipSize,
+  getColumn: getColumn,
+  getRow: getRow,
+  generateRow: generateRow
 };
 
 
