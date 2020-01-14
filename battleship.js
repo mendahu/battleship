@@ -227,7 +227,8 @@ module.exports = {
   getColumn,
   getRow,
   generateRow,
-  boardValidator
+  boardValidator,
+  getNthLetterFrom
 };
 
 

@@ -71,4 +71,13 @@ describe("Basic Functions", function() {
 
   });
 
+
+  it("getNthLetterFrom should return number of letters further down the alphabet", function() {
+
+    const letterCheck = battleshipFunctions.getNthLetterFrom("a", 2);
+
+    assert.equal(letterCheck, "c");
+
+  });
+
 });
