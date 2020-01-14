@@ -48,8 +48,10 @@ const generateRow = function(coordinate, quantity) {
   for (let i = 0; i < quantity; i++) {
     let currentRow = getRow(coordinate) + i;
 
-    if (!(boardValidator(coordinate))) {
+    if (boardValidator(currentColumn + currentRow)) {
       rowArray.push(currentColumn + currentRow);
+    } else {
+      return false;
     }
   }
 
