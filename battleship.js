@@ -19,17 +19,38 @@ const getShipSize = shipClass => shipLibrary[shipClass];
 const getColumn = coordinate => coordinate[0];
 
 //Get row from a coordinate
-const getRow = coordinate => Number(coordinate[1]);
+const getRow = cord => Number(cord.slice(1));
+
+//helper function that checks a coordinate for board validity
+const boardValidator = function(coordinate) {
+
+  let row = getRow(coordinate);
+  let column = getColumn(coordinate);
+
+  if (row > 10 ||
+      row < 1 ||
+      column.charCodeAt(0) > 106 ||
+      column.charCodeAt(0) > 106) {
+    return false;
+  }
+
+  return true;
+};
 
 //generates a row of coordinates horizontally to the right based on a starting position and quantity
 const generateRow = function(coordinate, quantity) {
   
   //create array to house coordinates
   let rowArray = [];
+  let currentColumn = getColumn(coordinate);
 
   //Loop an amount of times passed through and push the new coordinate to the array
   for (let i = 0; i < quantity; i++) {
-    rowArray.push(getColumn(coordinate) + (getRow(coordinate) + i));
+    let currentRow = getRow(coordinate) + i;
+
+    if (!(boardValidator(coordinate))) {
+      rowArray.push(currentColumn + currentRow);
+    }
   }
 
   return rowArray;
@@ -199,11 +220,12 @@ module.exports = {
   addPlayer: players.addPlayer,
   addGame: games.addGame,
   getGamesList: games.getGameList,
-  generateUid: generateUid,
-  getShipSize: getShipSize,
-  getColumn: getColumn,
-  getRow: getRow,
-  generateRow: generateRow
+  generateUid,
+  getShipSize,
+  getColumn,
+  getRow,
+  generateRow,
+  boardValidator
 };
 
 
