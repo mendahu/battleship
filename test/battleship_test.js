@@ -104,48 +104,47 @@ describe("Cordinate Manipulation", function() {
 
 });
 
+let players = {
+  0x00: { //This is the computer player
+    name: "Computer",
+    games: [
+      "123456abcdef",
+      "abcdef123456",
+      "abc123def456",
+      "123abc456def",
+      "321abc654def",
+      "abc321def654",
+      "abcdef654321",
+      "654321abcdef",
+      "fedcba123456"
+    ],
+    wins: 3
+  },
+  a1b2c3d4e5f6:{
+    name: "Jake",
+    games: [
+      "123456abcdef",
+      "abcdef123456",
+      "abc123def456",
+      "123abc456def",
+      "321abc654def",
+      "abc321def654",
+      "abcdef654321",
+      "654321abcdef",
+      "fedcba123456"
+    ],
+    wins: 6
+  },
+  addPlayer: battleshipFunctions.addPlayer
+};
+
+players.addPlayer("Fitz");
+
+let newID = _.findKey(players, ["name", "Fitz"]);
+
 describe("Player Manipulation", function() {
 
-  let players = {
-    0x00: { //This is the computer player
-      name: "Computer",
-      games: [
-        "123456abcdef",
-        "abcdef123456",
-        "abc123def456",
-        "123abc456def",
-        "321abc654def",
-        "abc321def654",
-        "abcdef654321",
-        "654321abcdef",
-        "fedcba123456"
-      ],
-      wins: 3
-    },
-    a1b2c3d4e5f6:{
-      name: "Jake",
-      games: [
-        "123456abcdef",
-        "abcdef123456",
-        "abc123def456",
-        "123abc456def",
-        "321abc654def",
-        "abc321def654",
-        "abcdef654321",
-        "654321abcdef",
-        "fedcba123456"
-      ],
-      wins: 6
-    },
-    addPlayer: battleshipFunctions.addPlayer
-  };
-
-  players.addPlayer("Fitz");
-
-  let newID = _.findKey(players, ["name", "Fitz"]);
-
   it("addPlayer should generate a new player with a unique 12 digit ID", function() {
-
 
     assert.isTrue(newID.length === 12);
 
@@ -163,10 +162,77 @@ describe("Player Manipulation", function() {
 
   });
 
-
   it("addPlayer should generate a new player with the correct inputted name", function() {
 
     assert.equal(players[newID]["name"], "Fitz");
+
+  });
+
+});
+
+describe("Game Manipulation", function() {
+
+  let games = {
+    w1e2r3t4y6u7: {
+      players: ["a1b2c3d4e5f6", "0x00"],
+      winner: "No Winner Yet",
+      smartComputer: false,
+      amountOfShips: 5,
+      shotsPerTurn: 1,
+      boardSize: 10,
+      ships: {
+        a1b2c3d4e5f6: {},
+        0x00: {},
+        addShip: battleshipFunctions.addShip
+      },
+      shots: {
+        a1b2c3d4e5f6: [],
+        0x00: [],
+        makeShot: battleshipFunctions.makeShot,
+        incrementTurnCount: battleshipFunctions.incrementTurnCount,
+        turnCount: 0
+      },
+    },
+    addGame: battleshipFunctions.addGame
+  };
+
+  games.addGame(newID, "0x00", true, 5, 1, 12);
+
+  let newGameID = _.findKey(games, ["players", [newID, "0x00"]]);
+
+  it("addGame should generate a new game with a unique 12 digit ID", function() {
+
+    assert.isTrue(newGameID.length === 12);
+
+  });
+
+  it("addGame should generate a new game with the correct players", function() {
+
+    assert.deepEqual(games[newGameID].players, [newID, "0x00"]);
+
+  });
+
+  it("addGame should generate a new game with the correct computer difficulty", function() {
+
+    assert.isTrue(games[newGameID].smartComputer);
+
+  });
+
+  it("addGame should generate a new game with the correct ship count", function() {
+
+    assert.equal(games[newGameID].amountOfShips, 5);
+
+  });
+
+  it("addGame should generate a new game with the correct turn count", function() {
+
+    assert.equal(games[newGameID].shotsPerTurn, 1);
+
+  });
+
+  it("addGame should generate a new game with the correct board size", function() {
+
+    assert.equal(games[newGameID].boardSize, 12);
 
   });
 

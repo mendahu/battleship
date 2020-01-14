@@ -239,7 +239,10 @@ module.exports = {
   generateRow,
   boardValidator,
   getNthLetterFrom,
-  generateColumn
+  generateColumn,
+  addShip: games.addGame.addShip,
+  makeShot: games.addGame.shots.makeShot,
+  incrementTurnCount: games.addGame.shots.incrementTurnCount
 };
 
 
