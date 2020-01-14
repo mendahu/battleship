@@ -1,5 +1,6 @@
 const chai = require('chai');
 const assert = chai.assert;
+const _ = require('lodash');
 
 const battleshipFunctions = require('../battleship.js');
 
@@ -36,6 +37,11 @@ describe("Basic Functions", function() {
     assert.isTrue(row === 4);
 
   });
+
+});
+
+describe("Cordinate Manipulation", function() {
+
 
   it("boardValidator should return true if a coordinate is in the board", function() {
 
@@ -93,6 +99,74 @@ describe("Basic Functions", function() {
     const column = battleshipFunctions.generateColumn("h4", 5);
 
     assert.isFalse(column);
+
+  });
+
+});
+
+describe("Player Manipulation", function() {
+
+  let players = {
+    0x00: { //This is the computer player
+      name: "Computer",
+      games: [
+        "123456abcdef",
+        "abcdef123456",
+        "abc123def456",
+        "123abc456def",
+        "321abc654def",
+        "abc321def654",
+        "abcdef654321",
+        "654321abcdef",
+        "fedcba123456"
+      ],
+      wins: 3
+    },
+    a1b2c3d4e5f6:{
+      name: "Jake",
+      games: [
+        "123456abcdef",
+        "abcdef123456",
+        "abc123def456",
+        "123abc456def",
+        "321abc654def",
+        "abc321def654",
+        "abcdef654321",
+        "654321abcdef",
+        "fedcba123456"
+      ],
+      wins: 6
+    },
+    addPlayer: battleshipFunctions.addPlayer
+  };
+
+  players.addPlayer("Fitz");
+
+  let newID = _.findKey(players, ["name", "Fitz"]);
+
+  it("addPlayer should generate a new player with a unique 12 digit ID", function() {
+
+
+    assert.isTrue(newID.length === 12);
+
+  });
+
+  it("addPlayer should generate a new player with an empty array of games", function() {
+
+    assert.deepEqual(players[newID]["games"], []);
+
+  });
+
+  it("addPlayer should generate a new player 0 wins", function() {
+
+    assert.equal(players[newID]["wins"], 0);
+
+  });
+
+
+  it("addPlayer should generate a new player with the correct inputted name", function() {
+
+    assert.equal(players[newID]["name"], "Fitz");
 
   });
 
