@@ -48,6 +48,7 @@ const generateRow = function(coordinate, quantity) {
   for (let i = 0; i < quantity; i++) {
     let currentRow = getRow(coordinate) + i;
 
+    //validate if the new coordinate is on the board, return false if not
     if (boardValidator(currentColumn + currentRow)) {
       rowArray.push(currentColumn + currentRow);
     } else {
@@ -69,13 +70,22 @@ const generateColumn = function(coordinate, quantity) {
 
   //create array to house coordinates
   let columnArray = [];
+  let currentRow = getRow(coordinate);
 
   //Loop an amount of times passed through and push the new coordinate to the array
   for (let i = 0; i < quantity; i++) {
-    columnArray.push(getNthLetterFrom(getColumn(coordinate), i) + getRow(coordinate));
+    let currentColumn = getNthLetterFrom(getColumn(coordinate), i);
+    
+    //validate if the new coordinate is on the board, return false if not
+    if (boardValidator(currentColumn + currentRow)) {
+      columnArray.push(currentColumn + currentRow);
+    } else {
+      return false;
+    }
   }
 
   return columnArray;
+
 };
 
 //returns an array of tiles that are occupied given a ship id
@@ -228,7 +238,8 @@ module.exports = {
   getRow,
   generateRow,
   boardValidator,
-  getNthLetterFrom
+  getNthLetterFrom,
+  generateColumn
 };
 
 

@@ -51,7 +51,7 @@ describe("Basic Functions", function() {
 
   it("boardValidator should return false if a coordinate is off the board", function() {
 
-    assert.isFalse(battleshipFunctions.boardValidator("q3"));
+    assert.isFalse(battleshipFunctions.boardValidator("l3"));
 
   });
 
@@ -77,6 +77,22 @@ describe("Basic Functions", function() {
     const letterCheck = battleshipFunctions.getNthLetterFrom("a", 2);
 
     assert.equal(letterCheck, "c");
+
+  });
+
+  it("generateColumnn should return a row of coordinates equal to the size passed through", function() {
+
+    const column = battleshipFunctions.generateColumn("d4", 5);
+
+    assert.deepEqual(column, ["d4", "e4", "f4", "g4", "h4"]);
+
+  });
+
+  it("generateColumn should return false if the column would push over the edge of the board", function() {
+
+    const column = battleshipFunctions.generateColumn("h4", 5);
+
+    assert.isFalse(column);
 
   });
 
