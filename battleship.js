@@ -88,6 +88,12 @@ const generateColumn = function(coordinate, quantity) {
 
 };
 
+//checks a playerId and returns their opponent playerId given a gameId
+const getOpponentId = function(playerId, gameId) {
+  let players = games[gameId].players.filter(player => player !== playerId);
+  return players[0];
+};
+
 //returns an array of tiles that are occupied given a ship id
 const getOccupiedTiles = function(shipID) {
 
@@ -97,20 +103,16 @@ const getOccupiedTiles = function(shipID) {
   //check direction and return the appropriate array
   if (this.direction === "horizontal") {
     return generateRow(coordinate, getShipSize(shipID));
-  } else {
+  } else if (this.direction === "vertical") {
     return generateColumn(coordinate, getShipSize(shipID));
+  } else {
+    return false;
   }
-};
-
-//checks a playerId and returns their opponent playerId given a gameId
-const getOpponentID = function(playerId, gameId) {
-  let players = games[gameId].players.filter(player => player === playerId);
-  return players[0];
 };
 
 //checks a coordinate on a player's map to see if it has been shot at already
 const checkForHit = function(coordinate, gameId, playerId) {
-  let shots = games[gameId].shots[getOpponentID(playerId)];
+  let shots = games[gameId].shots[getOpponentId(playerId)];
   shots.forEach(tile => {
     if (tile === coordinate) {
       return true;
@@ -125,19 +127,23 @@ const getShipStatus = function(shipPositions) {
   let hitCount = 0;
 
   //check each ship position tile for a hit, log to hitCount if true
-  shipPositions.forEach(coordinate => {
+
+  for (const coordinate in shipPositions) {
     if (checkForHit(coordinate)) {
       hitCount++;
     }
-  });
+  }
 
   //return true if ship is still alive, false if hits = size
-  return (hitCount < shipPositions.length);
+  return (shipPositions !== undefined)
+    ? (hitCount < shipPositions.length)
+    : false;
 };
 
 let games = {
   addGame: function(playerId1, playerId2, smartPC, amountOfShips, shotsPerTurn, boardSize) {
-    this[generateUid()] = {
+    let newGameId = generateUid();
+    this[newGameId] = {
       players: [playerId1, playerId2],
       winner: "No Winner Yet",
       smartComputer: smartPC,
@@ -145,30 +151,31 @@ let games = {
       shotsPerTurn: shotsPerTurn,
       boardSize: boardSize,
       ships: {
-        playerId1: {},
-        playerId2: {},
-        addShip: function(shipClass, coordinate, direction, playerUID) {
-          this[playerUID][generateUid()] = {
-            class: shipClass,
-            size: getShipSize(),
-            coordinate: coordinate,
-            direction: direction,
-            occupiedTiles: getOccupiedTiles(this),
-            status: getShipStatus(this.occupiedTiles)
-          };
-        }
+
       },
       shots: {
-        playerId1: [],
-        playerId2: [],
-        makeShot: function(playerId, coordinate) {
-          this[playerId].push(coordinate);
-        },
+        turnCount: 0,
         incrementTurnCount: function() {
           this.turnCount++;
-        },
-        turnCount: 0
-      },
+        }
+      }
+    };
+    this[newGameId]["ships"][playerId1] = {};
+    this[newGameId]["ships"][playerId2] = {};
+    this[newGameId]["ships"]["addShip"] = function(shipClass, coordinate, direction, playerUID) {
+      this[playerUID][generateUid()] = {
+        class: shipClass,
+        size: getShipSize(),
+        coordinate: coordinate,
+        direction: direction,
+        occupiedTiles: getOccupiedTiles(this),
+        status: getShipStatus(this.occupiedTiles)
+      };
+    },
+    this[newGameId]["shots"][playerId1] = [];
+    this[newGameId]["shots"][playerId2] = [];
+    this[newGameId]["shots"]["makeShot"] = function(playerId, coordinate) {
+      this[playerId].push(coordinate);
     };
   },
   getGameList: function(playerId) {
@@ -229,9 +236,8 @@ let players = {
 };
 
 module.exports = {
-  addPlayer: players.addPlayer,
-  addGame: games.addGame,
-  getGamesList: games.getGameList,
+  players,
+  games,
   generateUid,
   getShipSize,
   getColumn,
@@ -240,9 +246,10 @@ module.exports = {
   boardValidator,
   getNthLetterFrom,
   generateColumn,
-  addShip: games.addGame.addShip,
-  makeShot: games.addGame.shots.makeShot,
-  incrementTurnCount: games.addGame.shots.incrementTurnCount
+  getOccupiedTiles,
+  getOpponentId,
+  checkForHit,
+  getShipStatus
 };
 
 
