@@ -234,7 +234,13 @@ describe("Ship Adder", function() {
 
   it("addShip should create a new ship with the correct occupied tiles", function() {
 
-    assert.equal(testShip.occupiedTiles , ["a4", "b4"]);
+    assert.deepEqual(testShip.occupiedTiles , ["a4", "b4"]);
+
+  });
+
+  it("addShip should create a new ship with the correct healthy status", function() {
+
+    assert.isTrue(testShip.status);
 
   });
 

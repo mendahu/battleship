@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 //returns an 12-digit unique ID for use with games, users, and ships
 const generateUid = function() {
   return Math.floor((1 + Math.random()) * 0x1000000000000).toString(16).substring(1);
@@ -95,49 +97,16 @@ const getOpponentId = function(playerId, gameId) {
 };
 
 //returns an array of tiles that are occupied given a ship id
-const getOccupiedTiles = function(shipID) {
-
-  //set the ship's starting coordinate to a variable
-  let coordinate = this.coordinate;
+const getOccupiedTiles = function(coordinate, direction, size) {
 
   //check direction and return the appropriate array
-  if (this.direction === "horizontal") {
-    return generateRow(coordinate, getShipSize(shipID));
-  } else if (this.direction === "vertical") {
-    return generateColumn(coordinate, getShipSize(shipID));
+  if (direction === "horizontal") {
+    return generateRow(coordinate, size);
+  } else if (direction === "vertical") {
+    return generateColumn(coordinate, size);
   } else {
     return false;
   }
-};
-
-//checks a coordinate on a player's map to see if it has been shot at already
-const checkForHit = function(coordinate, gameId, playerId) {
-  let shots = games[gameId].shots[getOpponentId(playerId)];
-  shots.forEach(tile => {
-    if (tile === coordinate) {
-      return true;
-    }
-  });
-  return false;
-};
-
-//Takes an array of ship positions an returns true if some are unhit and false if all are hit
-const getShipStatus = function(shipPositions) {
-  //empty hit count to start
-  let hitCount = 0;
-
-  //check each ship position tile for a hit, log to hitCount if true
-
-  for (const coordinate in shipPositions) {
-    if (checkForHit(coordinate)) {
-      hitCount++;
-    }
-  }
-
-  //return true if ship is still alive, false if hits = size
-  return (shipPositions !== undefined)
-    ? (hitCount < shipPositions.length)
-    : false;
 };
 
 let games = {
@@ -169,8 +138,8 @@ let games = {
         size: getShipSize(shipClass),
         coordinate: coordinate,
         direction: direction,
-        occupiedTiles: getOccupiedTiles(newShipId),
-        status: getShipStatus(newShipId.occupiedTiles)
+        occupiedTiles: getOccupiedTiles(coordinate, direction, getShipSize(shipClass)),
+        status: true
       };
     },
     this[newGameId]["shots"][playerId1] = [];
@@ -199,6 +168,44 @@ let games = {
   }
 };
 
+
+//checks a coordinate on a player's map to see if it has been shot at already
+const checkForHit = function(coordinate, gameId, playerId) {
+
+  let shots;
+
+  //check if there are any shots, and if so, assign it to a variable
+  (games[gameId].shots[getOpponentId(playerId)])
+    ? shots = games[gameId].shots[getOpponentId(playerId)]
+    : shots = ["k11"];
+
+  shots.forEach(tile => {
+    if (tile === coordinate) {
+      return true;
+    }
+  });
+  return false;
+};
+
+
+//Takes an array of ship positions an returns true if some are unhit and false if all are hit
+const getShipStatus = function(shipPositions) {
+  //empty hit count to start
+  let hitCount = 0;
+
+  //check each ship position tile for a hit, log to hitCount if true
+
+  for (const coordinate in shipPositions) {
+    if (checkForHit(coordinate)) {
+      hitCount++;
+    }
+  }
+
+  //return true if ship is still alive, false if hits = size
+  return (shipPositions !== undefined)
+    ? (hitCount < shipPositions.length)
+    : false;
+};
 
 //takes the userID and returns a number of wins
 const getWinCount = function(playerId) {
