@@ -157,10 +157,26 @@ let games = {
 
       },
       shots: {
-        turnCount: 0,
-        incrementTurnCount: function() {
-          this.turnCount++;
+        turnsCompleted: 0,
+      },
+      takeTurn: function(coordinate) {
+        let currentTurn = currentGame.currentTurn;
+        let currentPlayer = currentGame.currentPlayer;
+
+        //log the shot into the game record
+        games[newGameId].shots[currentPlayer].push(coordinate);
+        
+        //increments turns in all the appropriate places
+        if (currentTurn[1] === 0) {
+          currentTurn[1]++;
+        } else {
+          currentTurn[0]++;
+          currentTurn[1]--;
+          this.shots.turnsCompleted++;
         }
+        
+        //changes current player
+        currentGame.currentPlayer = getOpponentId(currentPlayer, newGameId);
       }
     };
     this[newGameId]["ships"][playerId1] = {};
@@ -209,7 +225,8 @@ let games = {
     };
     currentGame["gameId"] = newGameId;
     currentGame["players"] = [playerId1, playerId2];
-    currentGame["currentTurn"] = 0;
+    currentGame["currentTurn"] = [0, 0];
+    currentGame["currentPlayer"] = playerId1;
   },
   getGameList: function(playerId) {
     //takes a userID and returns an array of all the gameIDs they've played

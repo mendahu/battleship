@@ -201,9 +201,15 @@ describe("Game Creation", function() {
 
   });
 
-  it("addGame should set currentGame turn to 0", function() {
+  it("addGame should set currentGame turn to [0, 0]", function() {
 
-    assert.equal(0, battleshipFunctions.currentGame["currentTurn"]);
+    assert.deepEqual([0, 0], battleshipFunctions.currentGame["currentTurn"]);
+
+  });
+
+  it("addGame should set currentGame currentPlayer to first player id", function() {
+
+    assert.equal(testIdFitz, battleshipFunctions.currentGame["currentPlayer"]);
 
   });
 
@@ -305,5 +311,37 @@ describe("Add All Ships", function() {
 
   });
 
+});
+
+let currentGame = battleshipFunctions.currentGame;
+let currGameShots = games[testGameId].shots;
+
+describe("Take a Turn", function() {
   
+  it("takeTurn should log the shot in the game table", function() {
+  
+    games[testGameId].takeTurn("i1");
+
+    assert.equal(currGameShots[testIdFitz][0], "i1");
+  
+  });
+  
+  it("takeTurn should increment the player order when a shot is taken", function() {
+
+    assert.isTrue(currentGame.currentTurn[1] === 1);
+
+  });
+
+  it("takeTurn should change the current player when a shot is taken", function() {
+
+    assert.isTrue(currentGame.currentPlayer === "0x00");
+
+  });
+
+  it("takeTurn should NOT increment the turn count when a shot is taken in the first half of a turn", function() {
+
+    assert.isTrue(currentGame.currentTurn[0] === 0);
+
+  });
+
 });
