@@ -48,25 +48,25 @@ describe("Cordinate Manipulation", function() {
 
   it("boardValidator should return true if a coordinate is in the board", function() {
 
-    assert.isTrue(battleshipFunctions.boardValidator("d4"));
+    assert.isTrue(battleshipFunctions.boardValidator("d4", 10));
 
   });
 
   it("boardValidator should return false if a coordinate is off the board", function() {
 
-    assert.isFalse(battleshipFunctions.boardValidator("d11"));
+    assert.isFalse(battleshipFunctions.boardValidator("d11", 10));
 
   });
 
   it("boardValidator should return false if a coordinate is off the board", function() {
 
-    assert.isFalse(battleshipFunctions.boardValidator("l3"));
+    assert.isFalse(battleshipFunctions.boardValidator("l3",  10));
 
   });
 
   it("generateRow should return a row of coordinates equal to the size passed through", function() {
 
-    const row = battleshipFunctions.generateRow("d4", 5);
+    const row = battleshipFunctions.generateRow("d4", 5, 10);
 
     assert.deepEqual(row, ["d4", "e4", "f4", "g4", "h4"]);
 
@@ -74,7 +74,7 @@ describe("Cordinate Manipulation", function() {
 
   it("generateRow should return false if the row would push over the edge of the board", function() {
 
-    const row = battleshipFunctions.generateRow("g4", 5);
+    const row = battleshipFunctions.generateRow("g4", 5, 10);
 
     assert.isFalse(row);
 
@@ -91,7 +91,7 @@ describe("Cordinate Manipulation", function() {
 
   it("generateColumnn should return a row of coordinates equal to the size passed through", function() {
 
-    const column = battleshipFunctions.generateColumn("d4", 5);
+    const column = battleshipFunctions.generateColumn("d4", 5, 10);
 
     assert.deepEqual(column, ["d4", "d5", "d6", "d7", "d8"]);
 
@@ -99,7 +99,7 @@ describe("Cordinate Manipulation", function() {
 
   it("generateColumn should return false if the column would push over the edge of the board", function() {
 
-    const column = battleshipFunctions.generateColumn("h8", 5);
+    const column = battleshipFunctions.generateColumn("h8", 5, 10);
 
     assert.isFalse(column);
 
@@ -189,6 +189,23 @@ describe("Game Creation", function() {
 
   });
 
+  it("addGame should set currentGame to new Id", function() {
+
+    assert.equal(testGameId, battleshipFunctions.currentGame["gameId"]);
+
+  });
+
+  it("addGame should set currentGame players to correct players", function() {
+
+    assert.deepEqual([testIdFitz, "0x00"], battleshipFunctions.currentGame["players"]);
+
+  });
+
+  it("addGame should set currentGame turn to 0", function() {
+
+    assert.equal(0, battleshipFunctions.currentGame["currentTurn"]);
+
+  });
 
 });
 

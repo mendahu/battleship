@@ -1,5 +1,7 @@
 const _ = require('lodash');
 
+let currentGame = {};
+
 //returns an 12-digit unique ID for use with games, users, and ships
 const generateUid = function() {
   return Math.floor((1 + Math.random()) * 0x1000000000000).toString(16).substring(1);
@@ -24,15 +26,15 @@ const getColumn = coordinate => coordinate[0];
 const getRow = cord => Number(cord.slice(1));
 
 //helper function that checks a coordinate for board validity
-const boardValidator = function(coordinate) {
+const boardValidator = function(coordinate, boardSize) {
 
   let row = getRow(coordinate);
   let column = getColumn(coordinate);
 
-  if (row > 10 ||
+  if (row > boardSize ||
       row < 1 ||
-      column.charCodeAt(0) > 106 ||
-      column.charCodeAt(0) > 106) {
+      column.charCodeAt(0) < 97 ||
+      column.charCodeAt(0) > 106 + (boardSize - 10)) {
     return false;
   }
 
@@ -40,7 +42,7 @@ const boardValidator = function(coordinate) {
 };
 
 //generates a row of coordinates horizontally to the right based on a starting position and quantity
-const generateColumn = function(coordinate, quantity) {
+const generateColumn = function(coordinate, quantity, boardSize) {
   
   //create array to house coordinates
   let rowArray = [];
@@ -51,7 +53,7 @@ const generateColumn = function(coordinate, quantity) {
     let currentRow = getRow(coordinate) + i;
 
     //validate if the new coordinate is on the board, return false if not
-    if (boardValidator(currentColumn + currentRow)) {
+    if (boardValidator(currentColumn + currentRow, boardSize)) {
       rowArray.push(currentColumn + currentRow);
     } else {
       return false;
@@ -68,7 +70,7 @@ const getNthLetterFrom = function(letter, n) {
 };
 
 //genarates a column of coordinates vertically downward from a starting position based on quantity
-const generateRow = function(coordinate, quantity) {
+const generateRow = function(coordinate, quantity, boardSize) {
 
   //create array to house coordinates
   let columnArray = [];
@@ -79,7 +81,7 @@ const generateRow = function(coordinate, quantity) {
     let currentColumn = getNthLetterFrom(getColumn(coordinate), i);
     
     //validate if the new coordinate is on the board, return false if not
-    if (boardValidator(currentColumn + currentRow)) {
+    if (boardValidator(currentColumn + currentRow, boardSize)) {
       columnArray.push(currentColumn + currentRow);
     } else {
       return false;
@@ -97,13 +99,13 @@ const getOpponentId = function(playerId, gameId) {
 };
 
 //returns an array of tiles that are occupied given a ship id
-const getOccupiedTiles = function(coordinate, direction, size) {
+const getOccupiedTiles = function(coordinate, direction, size, boardSize) {
 
   //check direction and return the appropriate array
   if (direction === "vertical") {
-    return generateColumn(coordinate, size);
+    return generateColumn(coordinate, size, boardSize);
   } else if (direction === "horizontal") {
-    return generateRow(coordinate, size);
+    return generateRow(coordinate, size, boardSize);
   } else {
     return false;
   }
@@ -172,7 +174,7 @@ let games = {
       }
       
       //checks if coordinates would go off the board or cover another ship
-      let occupiedTiles = getOccupiedTiles(coordinate, direction, getShipSize(shipClass));
+      let occupiedTiles = getOccupiedTiles(coordinate, direction, getShipSize(shipClass), games[newGameId].boardSize);
       let freeSpace = true;
       
       if (occupiedTiles) {
@@ -205,6 +207,9 @@ let games = {
     this[newGameId]["shots"]["makeShot"] = function(playerId, coordinate) {
       this[playerId].push(coordinate);
     };
+    currentGame["gameId"] = newGameId;
+    currentGame["players"] = [playerId1, playerId2];
+    currentGame["currentTurn"] = 0;
   },
   getGameList: function(playerId) {
     //takes a userID and returns an array of all the gameIDs they've played
@@ -302,6 +307,7 @@ let players = {
 };
 
 module.exports = {
+  currentGame,
   players,
   games,
   generateUid,
@@ -317,90 +323,3 @@ module.exports = {
   checkForHit,
   getShipStatus
 };
-
-
-/*
-countGames(uid, type) = function {
-  type: wins, losses
-}
-
-generateBoard = function(boardSize) {
-  generate an array for the board
-}
-
-generateLeaderboard = function() {
-  creates a leaderboard of all players ranked by wins against AI
-  let leaderBoard = {
-    playerUID: 6,
-    playerUID: 4
-  }
-}
-
-doesShotHit = function(coordinate) {
-  takes a coordinate and returns true if it hits a ship
-}
-
-isPlayerStillAlive = function(shots, uid) {
-  takes the shots object and the player uid to see if they are still alive
-}
-
-//players is a record of all players
-
-let players = {
-  5ng7: {
-    name: "Computer",
-    games: countGames(uid, wins) + countGames(uid, losses)
-    wins: countGames(uid, wins)
-    losses: countGames(uid, losses)
-  }
-  ab4d: {
-    name: "Jake",
-    games: countGames(uid, wins) + countGames(uid, losses)
-    wins: countGames(uid, wins)
-    losses: countGames(uid, losses)
-  }
-  addPlayer = function(name),
-}
-
-//games is a record of all games
-
-let games = {
-  gameUID: {
-    grid = createGrid(boardSize),
-    {
-      "a": [0,1,2,3,4,5,6,7,8,9],
-      "b": [0,1,2,3,4,5,6,7,8,9],
-    }
-    ships: {
-      playerUID: {
-        shipUID: {
-          class: "Battleship",
-          size: 5,
-          damage: getDamage(shipUID)
-          start: "j3"
-          direction: "vertical"
-          occupiedTiles: getOccupiedTiles(shipUID)
-          status: getStatus(shipUID)
-        },
-        shipUID: {
-          class: "Submarine",
-          size: 3,
-          start: "a4"
-          direction: "horizontal"
-          occupiedTiles: getOccupiedTiles(shipUID)
-          status: getStatus(shipUID)
-        }
-      }
-      addShip = function(class, coordinate, direction, playerUID)
-        (isShipLocationValid(class, coordinates, direction, playerUID))
-    }
-    shots = {
-      playerUID: ["a3", "b6", "c1"],
-      playerUID: ["e3", "0", "f4"],
-      makeShot = function(player, coordinates),
-    }
-    totalTurns: getTurnCount(gameUID);
-  }
-  addGame: function(uid1, uid2, smartPC, amountOfShips, shotsPerTurn, boardSize)
-}
-*/
