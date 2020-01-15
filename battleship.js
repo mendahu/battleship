@@ -163,13 +163,14 @@ let games = {
     this[newGameId]["ships"][playerId1] = {};
     this[newGameId]["ships"][playerId2] = {};
     this[newGameId]["ships"]["addShip"] = function(shipClass, coordinate, direction, playerUID) {
-      this[playerUID][generateUid()] = {
+      let newShipId = generateUid();
+      this[playerUID][newShipId] = {
         class: shipClass,
-        size: getShipSize(),
+        size: getShipSize(shipClass),
         coordinate: coordinate,
         direction: direction,
-        occupiedTiles: getOccupiedTiles(this),
-        status: getShipStatus(this.occupiedTiles)
+        occupiedTiles: getOccupiedTiles(newShipId),
+        status: getShipStatus(newShipId.occupiedTiles)
       };
     },
     this[newGameId]["shots"][playerId1] = [];

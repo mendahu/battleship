@@ -198,11 +198,43 @@ let testShipId = _.findKey(games[testGameId].ships[testIdFitz], ["class", "patro
 
 console.log(games[testGameId].ships);
 
+let testShip = games[testGameId].ships[testIdFitz][testShipId];
+
 describe("Ship Adder", function() {
   
   it("addShip should create a new ship for a player with a unique 12 digit string ID", function() {
 
     assert.equal(testShipId.length, 12);
+
+  });
+
+  it("addShip should create a new ship with the right class", function() {
+
+    assert.equal(testShip.class, "patrol");
+
+  });
+
+  it("addShip should create a new ship with the correct size", function() {
+
+    assert.equal(testShip.size, 2);
+
+  });
+
+  it("addShip should create a new ship with the correct starting coordinate", function() {
+
+    assert.equal(testShip.coordinate, "a4");
+
+  });
+
+  it("addShip should create a new ship with the correct direction", function() {
+
+    assert.equal(testShip.direction , "vertical");
+
+  });
+
+  it("addShip should create a new ship with the correct occupied tiles", function() {
+
+    assert.equal(testShip.occupiedTiles , ["a4", "b4"]);
 
   });
 
