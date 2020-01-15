@@ -109,6 +109,38 @@ const getOccupiedTiles = function(coordinate, direction, size) {
   }
 };
 
+//checks a board to see if a coordinate has a ship in it
+const isOccupied = function(gameId, playerId, coordinate) {
+
+  let ships;
+
+  let isSpaceOccupied = false;
+
+  //set ships object to variable for convenience
+  if (games[gameId].ships[playerId] !== undefined) {
+    ships = games[gameId].ships[playerId];
+  } else {
+    return false;
+  }
+
+
+  //loop through each ship
+  for (const ship in ships) {
+
+    //set each ship's tile array
+    let occupiedTiles = ships[ship].occupiedTiles;
+
+    //loop over each array
+    occupiedTiles.forEach(element => {
+      if (element === coordinate) {
+        isSpaceOccupied = true;
+      }
+    });
+  }
+
+  return isSpaceOccupied;
+};
+
 let games = {
   addGame: function(playerId1, playerId2, smartPC, amountOfShips, shotsPerTurn, boardSize) {
     let newGameId = generateUid();
@@ -133,11 +165,25 @@ let games = {
     this[newGameId]["ships"][playerId2] = {};
     this[newGameId]["ships"]["addShip"] = function(shipClass, coordinate, direction, playerUID) {
 
+      //new ship Id
       let newShipId = generateUid();
+
+      //checks if coordinates would go off the board or cover another ship
       let occupiedTiles = getOccupiedTiles(coordinate, direction, getShipSize(shipClass));
+      let freeSpace = true;
+
+      if (occupiedTiles) {
+
+        occupiedTiles.forEach(element => {
+
+          if (isOccupied(newGameId, playerUID, element)) {
+            freeSpace = false;
+          }
+        });
+      }
       
       //verifies that ship position if valid before adding new ship
-      if (occupiedTiles) {
+      if (occupiedTiles && freeSpace) {
         this[playerUID][newShipId] = {
           class: shipClass,
           size: getShipSize(shipClass),

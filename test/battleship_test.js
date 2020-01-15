@@ -199,7 +199,6 @@ const testShipId = _.findKey(games[testGameId].ships[testIdFitz], ["class", "pat
 let testShip = games[testGameId].ships[testIdFitz][testShipId];
 
 describe("Ship Adder", function() {
-
   
   it("addShip should create a new ship for a player with a unique 12 digit string ID", function() {
   
@@ -237,7 +236,7 @@ describe("Ship Adder", function() {
     
   });
   
-  it("addShip should not create a ship if an invalid coordinate/direction combo is passed", function() {
+  it("addShip should not create a ship if a coordinate would go off the board", function() {
     
     games[testGameId].ships.addShip("battleship", "j4", "horizontal", testIdFitz);
     
@@ -247,16 +246,38 @@ describe("Ship Adder", function() {
     
   });
   
+  it("addShip should not create a ship if a coordinate covers another ship", function() {
+    
+    games[testGameId].ships.addShip("battleship", "a3", "vertical", testIdFitz);
+    
+    let ships = Object.keys(games[testGameId].ships[testIdFitz]);
+
+    assert.equal(ships.length, 1);
+
+    
+  });
+  
   it("addShip should create a new ship with the correct healthy status", function() {
 
     assert.isTrue(testShip.status);
 
   });
 
-  console.log(games[testGameId].ships);
-
+  
 });
 
+describe("Add All Ships", function() {
+  
+  it("fff", function() {
+    
+    // games[testGameId].ships.addShip("cruiser", "g6", "horizontal", testIdFitz);
+    // games[testGameId].ships.addShip("submarine", "d1", "horizontal", testIdFitz);
+    // games[testGameId].ships.addShip("battleship", "b6", "vertical", testIdFitz);
+    // games[testGameId].ships.addShip("carrier", "f7", "horizontal", testIdFitz);
+    //console.log(games[testGameId].ships);
+    //assert.isTrue(testShip.status);
 
+  });
 
-//games[testGameId].ships.addShip("patrol", "a4", "vertical", testIdFitz);
+  
+});
