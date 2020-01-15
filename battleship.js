@@ -40,7 +40,7 @@ const boardValidator = function(coordinate) {
 };
 
 //generates a row of coordinates horizontally to the right based on a starting position and quantity
-const generateRow = function(coordinate, quantity) {
+const generateColumn = function(coordinate, quantity) {
   
   //create array to house coordinates
   let rowArray = [];
@@ -68,7 +68,7 @@ const getNthLetterFrom = function(letter, n) {
 };
 
 //genarates a column of coordinates vertically downward from a starting position based on quantity
-const generateColumn = function(coordinate, quantity) {
+const generateRow = function(coordinate, quantity) {
 
   //create array to house coordinates
   let columnArray = [];
@@ -100,10 +100,10 @@ const getOpponentId = function(playerId, gameId) {
 const getOccupiedTiles = function(coordinate, direction, size) {
 
   //check direction and return the appropriate array
-  if (direction === "horizontal") {
-    return generateRow(coordinate, size);
-  } else if (direction === "vertical") {
+  if (direction === "vertical") {
     return generateColumn(coordinate, size);
+  } else if (direction === "horizontal") {
+    return generateRow(coordinate, size);
   } else {
     return false;
   }
@@ -132,15 +132,21 @@ let games = {
     this[newGameId]["ships"][playerId1] = {};
     this[newGameId]["ships"][playerId2] = {};
     this[newGameId]["ships"]["addShip"] = function(shipClass, coordinate, direction, playerUID) {
+
       let newShipId = generateUid();
-      this[playerUID][newShipId] = {
-        class: shipClass,
-        size: getShipSize(shipClass),
-        coordinate: coordinate,
-        direction: direction,
-        occupiedTiles: getOccupiedTiles(coordinate, direction, getShipSize(shipClass)),
-        status: true
-      };
+      let occupiedTiles = getOccupiedTiles(coordinate, direction, getShipSize(shipClass));
+      
+      //verifies that ship position if valid before adding new ship
+      if (occupiedTiles) {
+        this[playerUID][newShipId] = {
+          class: shipClass,
+          size: getShipSize(shipClass),
+          coordinate: coordinate,
+          direction: direction,
+          occupiedTiles: occupiedTiles,
+          status: true
+        };
+      }
     },
     this[newGameId]["shots"][playerId1] = [];
     this[newGameId]["shots"][playerId2] = [];
@@ -250,10 +256,10 @@ module.exports = {
   getShipSize,
   getColumn,
   getRow,
-  generateRow,
+  generateColumn,
   boardValidator,
   getNthLetterFrom,
-  generateColumn,
+  generateRow,
   getOccupiedTiles,
   getOpponentId,
   checkForHit,

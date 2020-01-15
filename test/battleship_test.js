@@ -68,13 +68,13 @@ describe("Cordinate Manipulation", function() {
 
     const row = battleshipFunctions.generateRow("d4", 5);
 
-    assert.deepEqual(row, ["d4", "d5", "d6", "d7", "d8"]);
+    assert.deepEqual(row, ["d4", "e4", "f4", "g4", "h4"]);
 
   });
 
   it("generateRow should return false if the row would push over the edge of the board", function() {
 
-    const row = battleshipFunctions.generateRow("d7", 5);
+    const row = battleshipFunctions.generateRow("g4", 5);
 
     assert.isFalse(row);
 
@@ -93,13 +93,13 @@ describe("Cordinate Manipulation", function() {
 
     const column = battleshipFunctions.generateColumn("d4", 5);
 
-    assert.deepEqual(column, ["d4", "e4", "f4", "g4", "h4"]);
+    assert.deepEqual(column, ["d4", "d5", "d6", "d7", "d8"]);
 
   });
 
   it("generateColumn should return false if the column would push over the edge of the board", function() {
 
-    const column = battleshipFunctions.generateColumn("h4", 5);
+    const column = battleshipFunctions.generateColumn("h8", 5);
 
     assert.isFalse(column);
 
@@ -194,54 +194,69 @@ describe("Game Creation", function() {
 
 games[testGameId].ships.addShip("patrol", "a4", "vertical", testIdFitz);
 
-let testShipId = _.findKey(games[testGameId].ships[testIdFitz], ["class", "patrol"]);
-
-console.log(games[testGameId].ships);
+const testShipId = _.findKey(games[testGameId].ships[testIdFitz], ["class", "patrol"]);
 
 let testShip = games[testGameId].ships[testIdFitz][testShipId];
 
 describe("Ship Adder", function() {
+
   
   it("addShip should create a new ship for a player with a unique 12 digit string ID", function() {
-
+  
     assert.equal(testShipId.length, 12);
-
+    
   });
-
+  
   it("addShip should create a new ship with the right class", function() {
-
+    
     assert.equal(testShip.class, "patrol");
-
+    
   });
-
+  
   it("addShip should create a new ship with the correct size", function() {
-
+    
     assert.equal(testShip.size, 2);
-
+    
   });
-
+  
   it("addShip should create a new ship with the correct starting coordinate", function() {
-
+    
     assert.equal(testShip.coordinate, "a4");
-
+    
   });
-
+  
   it("addShip should create a new ship with the correct direction", function() {
-
+    
     assert.equal(testShip.direction , "vertical");
-
+    
   });
-
+  
   it("addShip should create a new ship with the correct occupied tiles", function() {
-
-    assert.deepEqual(testShip.occupiedTiles , ["a4", "b4"]);
-
+    
+    assert.deepEqual(testShip.occupiedTiles , ["a4", "a5"]);
+    
   });
+  
+  it("addShip should not create a ship if an invalid coordinate/direction combo is passed", function() {
+    
+    games[testGameId].ships.addShip("battleship", "j4", "horizontal", testIdFitz);
+    
+    let ships = Object.keys(games[testGameId].ships[testIdFitz]);
 
+    assert.equal(ships.length, 1);
+    
+  });
+  
   it("addShip should create a new ship with the correct healthy status", function() {
 
     assert.isTrue(testShip.status);
 
   });
 
+  console.log(games[testGameId].ships);
+
 });
+
+
+
+//games[testGameId].ships.addShip("patrol", "a4", "vertical", testIdFitz);
