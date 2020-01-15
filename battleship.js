@@ -92,10 +92,7 @@ const generateRow = function(coordinate, quantity, boardSize) {
 };
 
 //checks a playerId and returns their opponent playerId given a gameId
-const getOpponentId = function(playerId, gameId) {
-  let players = games[gameId].players.filter(player => player !== playerId);
-  return players[0];
-};
+const getOpponentId = (playerId, gameId) => games[gameId].players.filter(player => player !== playerId)[0];
 
 //returns an array of tiles that are occupied given a ship id
 const getOccupiedTiles = function(coordinate, direction, size, boardSize) {
