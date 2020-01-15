@@ -29,16 +29,15 @@ const getRow = cord => Number(cord.slice(1));
 const boardValidator = function(coordinate, boardSize) {
 
   let row = getRow(coordinate);
-  let column = getColumn(coordinate);
+  let col = getColumn(coordinate).charCodeAt(0);
 
-  if (row > boardSize ||
-      row < 1 ||
-      column.charCodeAt(0) < 97 ||
-      column.charCodeAt(0) > 106 + (boardSize - 10)) {
-    return false;
-  }
+  return !(
+    row > boardSize ||
+    row < 1 ||
+    col < 97 ||
+    col > 106 + (boardSize - 10)
+  );
 
-  return true;
 };
 
 //generates a row of coordinates horizontally to the right based on a starting position and quantity
