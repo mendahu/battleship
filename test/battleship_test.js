@@ -254,7 +254,6 @@ describe("Ship Adder", function() {
 
     assert.equal(ships.length, 1);
 
-    
   });
   
   it("addShip should create a new ship with the correct healthy status", function() {
@@ -268,14 +267,24 @@ describe("Ship Adder", function() {
 
 describe("Add All Ships", function() {
   
-  it("fff", function() {
+  it("addShip should not add a ship if the max ship size has been reached", function() {
     
-    // games[testGameId].ships.addShip("cruiser", "g6", "horizontal", testIdFitz);
-    // games[testGameId].ships.addShip("submarine", "d1", "horizontal", testIdFitz);
-    // games[testGameId].ships.addShip("battleship", "b6", "vertical", testIdFitz);
-    // games[testGameId].ships.addShip("carrier", "f7", "horizontal", testIdFitz);
-    //console.log(games[testGameId].ships);
-    //assert.isTrue(testShip.status);
+    games[testGameId].ships.addShip("cruiser", "g6", "horizontal", testIdFitz);
+    games[testGameId].ships.addShip("submarine", "d1", "horizontal", testIdFitz);
+    games[testGameId].ships.addShip("battleship", "b6", "vertical", testIdFitz);
+    games[testGameId].ships.addShip("carrier", "f7", "horizontal", testIdFitz);
+    
+    games[testGameId].ships.addShip("patrol", "a10", "horizontal", "0x00");
+    games[testGameId].ships.addShip("cruiser", "h7", "horizontal", "0x00");
+    games[testGameId].ships.addShip("submarine", "d10", "horizontal", "0x00");
+    games[testGameId].ships.addShip("battleship", "g2", "vertical", "0x00");
+    games[testGameId].ships.addShip("carrier", "e1", "vertical", "0x00");
+    
+    games[testGameId].ships.addShip("cruiser", "g10", "horizontal", testIdFitz);
+
+    let ships = Object.keys(games[testGameId].ships[testIdFitz]);
+
+    assert.equal(ships.length, 5);
 
   });
 

@@ -164,23 +164,29 @@ let games = {
     this[newGameId]["ships"][playerId1] = {};
     this[newGameId]["ships"][playerId2] = {};
     this[newGameId]["ships"]["addShip"] = function(shipClass, coordinate, direction, playerUID) {
-
-      //new ship Id
-      let newShipId = generateUid();
-
+      
+      //checks if we have reached max ship amount
+      let shipQuantity = Object.keys(games[newGameId]["ships"][playerUID]).length;
+      if (shipQuantity >= games[newGameId].amountOfShips) {
+        return;
+      }
+      
       //checks if coordinates would go off the board or cover another ship
       let occupiedTiles = getOccupiedTiles(coordinate, direction, getShipSize(shipClass));
       let freeSpace = true;
-
+      
       if (occupiedTiles) {
-
+        //loops over over each coordinate new ship would occupy
         occupiedTiles.forEach(element => {
-
+          //sets freeSpace to false if there is already a ship there
           if (isOccupied(newGameId, playerUID, element)) {
             freeSpace = false;
           }
         });
       }
+      
+      //new ship Id
+      let newShipId = generateUid();
       
       //verifies that ship position if valid before adding new ship
       if (occupiedTiles && freeSpace) {
