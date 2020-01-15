@@ -1,5 +1,6 @@
 const _ = require('lodash');
 
+//Empty object to house shorthand data for the current game
 let currentGame = {};
 
 //returns an 12-digit unique ID for use with games, users, and ships
@@ -64,9 +65,7 @@ const generateColumn = function(coordinate, quantity, boardSize) {
 
 //takes one letter and returns the nth next letter in the alphabet
 //does not work past "z" but this is not necessary for this exercise
-const getNthLetterFrom = function(letter, n) {
-  return String.fromCharCode(letter.charCodeAt(0) + n);
-};
+const getNthLetterFrom = (letter, n) => String.fromCharCode(letter.charCodeAt(0) + n);
 
 //genarates a column of coordinates vertically downward from a starting position based on quantity
 const generateRow = function(coordinate, quantity, boardSize) {
