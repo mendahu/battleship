@@ -16,7 +16,9 @@ const {
 const { games } = require('./games');
 
 //Empty object to house shorthand data for the current game
-let currentGame = {};
+let currentGame = {
+  turn: [0, 0]
+};
 
 //sets current players to current game instance
 const setPlayers = (players) => currentGame.players = players;

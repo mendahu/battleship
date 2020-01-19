@@ -1,17 +1,5 @@
 const { games } = require("./games");
 
-//A library of ship size definitions
-let shipLibrary = {
-  carrier: 5,
-  battleship: 4,
-  submarine: 3,
-  cruiser: 3,
-  patrol: 2
-};
-
-//Gets the size of a ship based on its class
-const getShipSize = shipClass => shipLibrary[shipClass];
-
 //Get column from a coordinate
 const getColumn = coordinate => coordinate[0];
 
@@ -131,8 +119,6 @@ const isOccupied = function(gameId, playerId, coordinate) {
 };
 
 module.exports = {
-  shipLibrary,
-  getShipSize,
   getColumn,
   getRow,
   isValidCoord,

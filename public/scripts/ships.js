@@ -1,15 +1,37 @@
 const { UniqueThing } = require("./unique");
 
+//A library of ship size definitions
+let shipLibrary = {
+  carrier: 5,
+  battleship: 4,
+  submarine: 3,
+  cruiser: 3,
+  patrol: 2
+};
+
 //Ship class for creating new ships
 class Ship extends UniqueThing {
 
-  constructor() {
+  constructor(gameId, playerId, shipClass) {
     super();
+    this.gameId = gameId;
+    this.playerId = playerId;
+    this.class = shipClass;
+  }
+
+  get size() {
+    return shipLibrary[this.class];
   }
 }
 
 let ships = {
   
+  addShip: function(gameId, playerId, shipClass) {
+    let newShip = new Ship(gameId, playerId, shipClass);
+    let newShipId = newShip.uid;
+    ships[newShipId] = newShip;
+  }
+
 };
 
 module.exports = { Ship, ships };
