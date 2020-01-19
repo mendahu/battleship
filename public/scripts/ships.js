@@ -1,5 +1,5 @@
 const { UniqueThing } = require("./unique");
-const { isValidCoord } = require('./helpers');
+const { isValidCoord, getOccupiedTiles, areValidTiles } = require('./helpers');
 const { games } = require('./games');
 
 //A library of ship size definitions
@@ -35,7 +35,8 @@ class Ship extends UniqueThing {
 let ships = {
   
   addShip: function(gameId, playerId, shipClass, coord, direction) {
-    if (isValidCoord(coord, games[gameId].options.boardSize)) {
+    let boardSize = games[gameId].options.boardSize;
+    if (areValidTiles(getOccupiedTiles(coord, direction, shipLibrary[shipClass]), boardSize)) {
       let newShip = new Ship(gameId, playerId, shipClass, coord, direction);
       let newShipId = newShip.uid;
       ships[newShipId] = newShip;

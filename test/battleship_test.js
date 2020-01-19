@@ -56,18 +56,10 @@ describe("Cordinate Manipulation", function() {
 
   it("generateRow should return a row of coordinates equal to the size passed through", function() {
 
-    const row = helperFunctions.generateRow("d4", 5, 10);
+    const row = helperFunctions.generateRow("d4", 5);
 
     assert.deepEqual(row, ["d4", "e4", "f4", "g4", "h4"]);
   });
-
-  it("generateRow should return false if the row would push over the edge of the board", function() {
-
-    const row = helperFunctions.generateRow("g4", 5, 10);
-
-    assert.isFalse(row);
-  });
-
 
   it("getNthLetterFrom should return number of letters further down the alphabet", function() {
 
@@ -78,16 +70,14 @@ describe("Cordinate Manipulation", function() {
 
   it("generateColumnn should return a row of coordinates equal to the size passed through", function() {
 
-    const column = helperFunctions.generateColumn("d4", 5, 10);
+    const column = helperFunctions.generateColumn("d4", 5);
 
     assert.deepEqual(column, ["d4", "d5", "d6", "d7", "d8"]);
   });
 
-  it("generateColumn should return false if the column would push over the edge of the board", function() {
+  it("areValidTiles should return false if any tiles are off the board", function() {
 
-    const column = helperFunctions.generateColumn("h8", 5, 10);
-
-    assert.isFalse(column);
+    assert.isFalse(helperFunctions.areValidTiles(["d7", "d8", "d9", "d10", "d11"], 10));
   });
 });
 
@@ -154,7 +144,6 @@ describe("Game Creation", function() {
     assert.isTrue(testGameId.length === 12);
   });
   
-  
   it("addGame should generate a new game with the correct players", function() {
     
     assert.deepEqual(games[testGameId].players, [testIdFitz, "0x00"]);
@@ -211,8 +200,6 @@ const testShipId = _.findKey(ships, ["class", "patrol"]);
 
 let testShip = ships[testShipId];
 
-console.log(ships);
-
 describe("Ship Adder", function() {
   
   it("addShip should create a new ship for a player with a unique 12 digit string ID", function() {
@@ -234,12 +221,12 @@ describe("Ship Adder", function() {
     
     assert.equal(testShip.coordinate, "a4");
   });
+      
+  it("addShip should not create a ship if any ship tiles roll off the board", function() {
     
-  it("addShip should not create a ship if starting coordinate is off the board", function() {
-    
-    ships.addShip(testGameId, testIdFitz, "battleship", "q16", "vertical");
+    ships.addShip(testGameId, testIdFitz, "carrier", "b10", "vertical");
 
-    const testBadShipId = _.findKey(ships, ["class", "battleship"]);
+    const testBadShipId = _.findKey(ships, ["class", "carrier"]);
 
     assert.equal(testBadShipId, undefined);
   });

@@ -22,7 +22,7 @@ const isValidCoord = function(coordinate, boardSize) {
 };
 
 //generates a row of coordinates horizontally to the right based on a starting position and quantity
-const generateColumn = function(coordinate, quantity, boardSize) {
+const generateColumn = function(coordinate, quantity) {
   
   //create array to house coordinates
   let rowArray = [];
@@ -31,15 +31,8 @@ const generateColumn = function(coordinate, quantity, boardSize) {
   //Loop an amount of times passed through and push the new coordinate to the array
   for (let i = 0; i < quantity; i++) {
     let currentRow = getRow(coordinate) + i;
-
-    //validate if the new coordinate is on the board, return false if not
-    if (isValidCoord(currentColumn + currentRow, boardSize)) {
-      rowArray.push(currentColumn + currentRow);
-    } else {
-      return false;
-    }
+    rowArray.push(currentColumn + currentRow);
   }
-
   return rowArray;
 };
 
@@ -48,7 +41,7 @@ const generateColumn = function(coordinate, quantity, boardSize) {
 const getNthLetterFrom = (letter, n) => String.fromCharCode(letter.charCodeAt(0) + n);
 
 //genarates a column of coordinates vertically downward from a starting position based on quantity
-const generateRow = function(coordinate, quantity, boardSize) {
+const generateRow = function(coordinate, quantity) {
 
   //create array to house coordinates
   let columnArray = [];
@@ -57,33 +50,36 @@ const generateRow = function(coordinate, quantity, boardSize) {
   //Loop an amount of times passed through and push the new coordinate to the array
   for (let i = 0; i < quantity; i++) {
     let currentColumn = getNthLetterFrom(getColumn(coordinate), i);
-    
-    //validate if the new coordinate is on the board, return false if not
-    if (isValidCoord(currentColumn + currentRow, boardSize)) {
-      columnArray.push(currentColumn + currentRow);
-    } else {
-      return false;
-    }
+    columnArray.push(currentColumn + currentRow);
   }
-
   return columnArray;
-
 };
 
 //checks a playerId and returns their opponent playerId given a gameId
 const getOpponentId = (playerId, gameId) => games[gameId].players.filter(player => player !== playerId)[0];
 
 //returns an array of tiles that a potential ship might occupy given size, location, direction
-const getOccupiedTiles = function(coordinate, direction, size, boardSize) {
+const getOccupiedTiles = function(coordinate, direction, size) {
 
   //check direction and return the appropriate array
   if (direction === "vertical") {
-    return generateColumn(coordinate, size, boardSize);
+    return generateColumn(coordinate, size);
   } else if (direction === "horizontal") {
-    return generateRow(coordinate, size, boardSize);
+    return generateRow(coordinate, size);
   } else {
     return false;
   }
+};
+
+//checks an array of tiles to see if they are all on the board
+const areValidTiles = function(tiles, boardSize) {
+  let areValid = true;
+  tiles.forEach(tile => {
+    if (!isValidCoord(tile, boardSize)) {
+      areValid = false;
+    }
+  });
+  return areValid;
 };
 
 //checks a board to see if a coordinate has a ship in it
@@ -127,5 +123,6 @@ module.exports = {
   generateColumn,
   getOccupiedTiles,
   getOpponentId,
-  isOccupied
+  isOccupied,
+  areValidTiles
 };
