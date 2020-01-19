@@ -7,5 +7,12 @@ app.listen(port, () => {
 });
 
 app.get("/", (req, res) => {
-  res.send("Welcome to Battleship");
+  res.sendFile(__dirname + "/public/index.html");
+});
+
+app.use(express.static('public'));
+
+// 404
+app.use(function(req, res, next) {
+  res.status(404).send("Path or File not found.");
 });
