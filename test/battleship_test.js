@@ -92,6 +92,7 @@ describe("Cordinate Manipulation", function() {
 });
 
 //Sets test code up using real functions to simulate actual game experience
+players.addPlayer("Computer", "0x00");
 players.addPlayer("Fitz");
 players.addPlayer("Juno");
 let testIdFitz = _.findKey(players, ["name", "Fitz"]);
@@ -106,14 +107,27 @@ describe("Player Creation", function() {
     assert.isTrue(testIdFitz.length === 12);
   });
 
+  it("addPlayer should generate a computer player with the unique ID 0x00", function() {
+
+    assert.equal("0x00", players["0x00"].uid);
+  });
+
+  it("addPlayer should generate a computer player with the name Computer", function() {
+
+    assert.equal("Computer", players["0x00"].name);
+  });
+
   it("addPlayer should generate a new player whose UID matches", function() {
 
     assert.equal(testIdFitz, players[testIdFitz].uid);
   });
-
+  
   it("addPlayer should generate a new player with an empty array of games", function() {
+    
+    players.addPlayer("Jake");
+    let testIdJake = _.findKey(players, ["name", "Jake"]);
 
-    assert.deepEqual(players[testIdFitz]["games"], []);
+    assert.deepEqual(players[testIdJake].games, []);
   });
 
   it("addPlayer should generate a new player 0 wins", function() {
@@ -170,6 +184,11 @@ describe("Game Creation", function() {
     
     assert.equal(helperFunctions.getOpponentId(testIdFitz, testGameId), "0x00");
   });
+    
+  it("players should now report a game on their record", function() {
+    
+    assert.equal(players[testIdFitz].games.length, 1);
+  });
 });
 
 describe("Game Start", function() {
@@ -192,7 +211,7 @@ const testShipId = _.findKey(ships, ["class", "patrol"]);
 
 let testShip = ships[testShipId];
 
-console.log(ships);
+//console.log(ships);
 
 describe("Ship Adder", function() {
   

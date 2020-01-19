@@ -1,30 +1,38 @@
 const { UniqueThing } = require("./unique");
+const { games } = require('./games');
 
 //Player class for creating new players
 class Player extends UniqueThing {
 
-  constructor(name) {
+  constructor(name, uid) {
     super();
+    if (uid) {
+      this.uid = uid;
+    }
     this.name = name;
-    this.games = [];
     this.wins = 0;
+  }
+
+  get games() {
+    let gameList = [];
+    for (const game in games) {
+      let players = games[game].players;
+      if (players) {
+        if (players[0] === this.uid || players[1] === this.uid) {
+          gameList.push(game);
+        }
+      }
+    }
+    return gameList;
   }
 }
 
 //creates an object to house players
 //players.addPlayer is a method to create a new player
-
 let players = {
 
-  "0x00": { //This is the computer player
-    uid: "0x00",
-    name: "Computer",
-    //games: games.getGameList(this),
-    //wins: getWinCount(this),
-  },
-
-  addPlayer: function(name) {
-    let newPlayer = new Player(name);
+  addPlayer: function(name, uid) {
+    let newPlayer = new Player(name, uid);
     let newPlayerUid = newPlayer.uid;
     players[newPlayerUid] = newPlayer;
   }
