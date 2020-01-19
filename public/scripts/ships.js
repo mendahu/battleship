@@ -1,4 +1,6 @@
 const { UniqueThing } = require("./unique");
+const { isValidCoord } = require('./helpers');
+const { games } = require('./games');
 
 //A library of ship size definitions
 let shipLibrary = {
@@ -12,26 +14,33 @@ let shipLibrary = {
 //Ship class for creating new ships
 class Ship extends UniqueThing {
 
-  constructor(gameId, playerId, shipClass) {
+  constructor(gameId, playerId, shipClass, coord, direction) {
     super();
     this.gameId = gameId;
     this.playerId = playerId;
     this.class = shipClass;
+    this.coordinate = coord;
+    this.direction = direction;
   }
 
   get size() {
     return shipLibrary[this.class];
   }
+
+  get tiles() {
+    //
+  }
 }
 
 let ships = {
   
-  addShip: function(gameId, playerId, shipClass) {
-    let newShip = new Ship(gameId, playerId, shipClass);
-    let newShipId = newShip.uid;
-    ships[newShipId] = newShip;
+  addShip: function(gameId, playerId, shipClass, coord, direction) {
+    if (isValidCoord(coord, games[gameId].options.boardSize)) {
+      let newShip = new Ship(gameId, playerId, shipClass, coord, direction);
+      let newShipId = newShip.uid;
+      ships[newShipId] = newShip;
+    }
   }
-
 };
 
 module.exports = { Ship, ships };

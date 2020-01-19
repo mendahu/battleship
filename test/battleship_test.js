@@ -205,47 +205,51 @@ describe("Game Start", function() {
 });
 
 
-ships.addShip(testGameId, testIdFitz, "patrol");
+ships.addShip(testGameId, testIdFitz, "patrol", "a4", "vertical");
 
 const testShipId = _.findKey(ships, ["class", "patrol"]);
 
 let testShip = ships[testShipId];
 
-//console.log(ships);
+console.log(ships);
 
 describe("Ship Adder", function() {
   
   it("addShip should create a new ship for a player with a unique 12 digit string ID", function() {
     
     assert.equal(testShipId.length, 12);
-    
   });
   
   it("addShip should create a new ship with the right class", function() {
     
     assert.equal(testShip.class, "patrol");
-    
   });
   
   it("addShip should create a new ship with the correct size", function() {
     
     assert.equal(testShip.size, 2);
-    
   });
-  /*
   
   it("addShip should create a new ship with the correct starting coordinate", function() {
     
     assert.equal(testShip.coordinate, "a4");
+  });
     
+  it("addShip should not create a ship if starting coordinate is off the board", function() {
+    
+    ships.addShip(testGameId, testIdFitz, "battleship", "q16", "vertical");
+
+    const testBadShipId = _.findKey(ships, ["class", "battleship"]);
+
+    assert.equal(testBadShipId, undefined);
   });
   
   it("addShip should create a new ship with the correct direction", function() {
     
     assert.equal(testShip.direction , "vertical");
-    
   });
   
+  /*
   it("addShip should create a new ship with the correct occupied tiles", function() {
     
     assert.deepEqual(testShip.occupiedTiles , ["a4", "a5"]);
