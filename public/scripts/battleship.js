@@ -15,8 +15,6 @@ const {
 //Empty object to house shorthand data for the current game
 let currentGame = {};
 
-
-
 //checks a board to see if a coordinate has a ship in it
 const isOccupied = function(gameId, playerId, coordinate) {
 
