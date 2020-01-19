@@ -24,6 +24,8 @@ const setPlayers = (players) => currentGame.players = players;
 //sets current gameID to current game instance
 const setGame = (gameId) => currentGame.uid = gameId;
 
+/*
+
 //checks a coordinate on a player's map to see if it has been shot at already
 const checkForHit = function(coordinate, gameId, playerId) {
 
@@ -79,10 +81,12 @@ const getWinCount = function(playerId) {
   return winCount;
 };
 
+*/
+
 module.exports = {
   currentGame,
   setPlayers,
   setGame,
-  checkForHit,
-  getShipStatus
+  //checkForHit,
+  //getShipStatus
 };
