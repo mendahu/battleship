@@ -1,6 +1,5 @@
 //const _ = require('lodash');
 const {
-  generateUid,
   shipLibrary,
   getShipSize,
   getColumn,
@@ -14,114 +13,16 @@ const {
   isOccupied
 } = require('./helpers');
 
+const { games } = require('./games');
+
 //Empty object to house shorthand data for the current game
 let currentGame = {};
 
-let games = {
-  addGame: function(playerId1, playerId2, smartPC, amountOfShips, shotsPerTurn, boardSize) {
-    let newGameId = generateUid();
-    this[newGameId] = {
-      players: [playerId1, playerId2],
-      winner: "No Winner Yet",
-      smartComputer: smartPC,
-      amountOfShips: amountOfShips,
-      shotsPerTurn: shotsPerTurn,
-      boardSize: boardSize,
-      ships: {
+//sets current players to current game instance
+const setPlayers = (players) => currentGame.players = players;
 
-      },
-      shots: {
-        turnsCompleted: 0,
-      },
-      takeTurn: function(coordinate) {
-        let currentTurn = currentGame.currentTurn;
-        let currentPlayer = currentGame.currentPlayer;
-
-        //log the shot into the game record
-        games[newGameId].shots[currentPlayer].push(coordinate);
-        
-        //increments turns in all the appropriate places
-        if (currentTurn[1] === 0) {
-          currentTurn[1]++;
-        } else {
-          currentTurn[0]++;
-          currentTurn[1]--;
-          this.shots.turnsCompleted++;
-        }
-        
-        //changes current player
-        currentGame.currentPlayer = getOpponentId(currentPlayer, newGameId);
-      }
-    };
-    this[newGameId]["ships"][playerId1] = {};
-    this[newGameId]["ships"][playerId2] = {};
-    this[newGameId]["ships"]["addShip"] = function(shipClass, coordinate, direction, playerUID) {
-      
-      //checks if we have reached max ship amount
-      let shipQuantity = Object.keys(games[newGameId]["ships"][playerUID]).length;
-      if (shipQuantity >= games[newGameId].amountOfShips) {
-        return;
-      }
-      
-      //checks if coordinates would go off the board or cover another ship
-      let occupiedTiles = getOccupiedTiles(coordinate, direction, getShipSize(shipClass), games[newGameId].boardSize);
-      let freeSpace = true;
-      
-      if (occupiedTiles) {
-        //loops over over each coordinate new ship would occupy
-        occupiedTiles.forEach(element => {
-          //sets freeSpace to false if there is already a ship there
-          if (isOccupied(newGameId, playerUID, element)) {
-            freeSpace = false;
-          }
-        });
-      }
-      
-      //new ship Id
-      let newShipId = generateUid();
-      
-      //verifies that ship position if valid before adding new ship
-      if (occupiedTiles && freeSpace) {
-        this[playerUID][newShipId] = {
-          class: shipClass,
-          size: getShipSize(shipClass),
-          coordinate: coordinate,
-          direction: direction,
-          occupiedTiles: occupiedTiles,
-          status: true
-        };
-      }
-    },
-    this[newGameId]["shots"][playerId1] = [];
-    this[newGameId]["shots"][playerId2] = [];
-    this[newGameId]["shots"]["makeShot"] = function(playerId, coordinate) {
-      this[playerId].push(coordinate);
-    };
-    currentGame["gameId"] = newGameId;
-    currentGame["players"] = [playerId1, playerId2];
-    currentGame["currentTurn"] = [0, 0];
-    currentGame["currentPlayer"] = playerId1;
-  },
-  getGameList: function(playerId) {
-    //takes a userID and returns an array of all the gameIDs they've played
-    //start with empty game list
-    let gameList = [];
-  
-    //Loop through games
-    for (const game in this) {
-
-      //wrap with a check to see if game.player exists (for when there are no records of games)
-      //if either playerID matches, push the game ID to the list
-      if (game.player !== undefined) {
-        if ((game.players[0] === playerId) || (game.players[1] === playerId)) {
-          gameList.push(game);
-        }
-      }
-    }
-    return gameList;
-  }
-};
-
+//sets current gameID to current game instance
+const setGame = (gameId) => currentGame.uid = gameId;
 
 //checks a coordinate on a player's map to see if it has been shot at already
 const checkForHit = function(coordinate, gameId, playerId) {
@@ -180,7 +81,8 @@ const getWinCount = function(playerId) {
 
 module.exports = {
   currentGame,
-  games,
+  setPlayers,
+  setGame,
   checkForHit,
   getShipStatus
 };

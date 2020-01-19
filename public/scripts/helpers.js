@@ -1,9 +1,4 @@
-const { games } = require("./battleship");
-
-//returns an 12-digit unique ID for use with games, users, and ships
-const generateUid = function() {
-  return Math.floor((1 + Math.random()) * 0x1000000000000).toString(16).substring(1);
-};
+const { games } = require("./games");
 
 //A library of ship size definitions
 let shipLibrary = {
@@ -136,7 +131,6 @@ const isOccupied = function(gameId, playerId, coordinate) {
 };
 
 module.exports = {
-  generateUid,
   shipLibrary,
   getShipSize,
   getColumn,

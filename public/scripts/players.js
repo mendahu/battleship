@@ -30,7 +30,4 @@ let players = {
   }
 };
 
-module.exports = {
-  Player,
-  players
-};
+module.exports = { Player, players };

@@ -3,19 +3,21 @@ const assert = chai.assert;
 const _ = require('lodash');
 
 const battleshipFunctions = require('../public/scripts/battleship');
+const { generateUid } = require('../public/scripts/unique');
 const playerFunctions = require('../public/scripts/players');
 const helperFunctions = require('../public/scripts/helpers');
+const gamesFunctions = require('../public/scripts/games');
 
 let players = playerFunctions.players;
-let games = battleshipFunctions.games;
+let games = gamesFunctions.games;
 
 describe("Basic Functions", function() {
 
   it("generateUid() should return a twelve digit string", function() {
 
-    const generateUid = helperFunctions.generateUid();
+    const testID = generateUid();
 
-    assert.isTrue(generateUid.length === 12 && typeof generateUid === "string");
+    assert.isTrue(testID.length === 12 && typeof testID === "string");
 
   });
 
@@ -149,69 +151,85 @@ describe("Player Creation", function() {
 
 });
 
-console.log(players);
 
-/*
+let testPlayers = [testIdFitz, "0x00"];
+let testOptions = { smartPC: true, shipCount: 5, shotsPerTurn: 1, boardSize: 12 };
 
-games.addGame(testIdFitz, "0x00", true, 5, 1, 12);
+games.addGame(testPlayers, testOptions);
 
 let testGameId = _.findKey(games, ["players", [testIdFitz, "0x00"]]);
 
+console.log(games);
+console.log(players);
+
 describe("Game Creation", function() {
-
+  
   it("addGame should generate a new game with a unique 12 digit ID", function() {
-
+    
     assert.isTrue(testGameId.length === 12);
-
+    
   });
-
+  
+  
   it("addGame should generate a new game with the correct players", function() {
-
+    
     assert.deepEqual(games[testGameId].players, [testIdFitz, "0x00"]);
-
+    
   });
-
+  
   it("addGame should generate a new game with the correct computer difficulty", function() {
-
-    assert.isTrue(games[testGameId].smartComputer);
-
+    
+    assert.isTrue(games[testGameId].options.smartPC);
+    
   });
-
+  
   it("addGame should generate a new game with the correct ship count", function() {
-
-    assert.equal(games[testGameId].amountOfShips, 5);
-
+    
+    assert.equal(games[testGameId].options.shipCount, 5);
+    
   });
-
+  
   it("addGame should generate a new game with the correct turn count", function() {
-
-    assert.equal(games[testGameId].shotsPerTurn, 1);
-
+    
+    assert.equal(games[testGameId].options.shotsPerTurn, 1);
+    
   });
-
+  
   it("addGame should generate a new game with the correct board size", function() {
-
-    assert.equal(games[testGameId].boardSize, 12);
-
+    
+    assert.equal(games[testGameId].options.boardSize, 12);
+    
   });
-
+  
   it("getOpponentId should take one playerID and return their opponent given a game ID", function() {
-
+    
     assert.equal(helperFunctions.getOpponentId(testIdFitz, testGameId), "0x00");
-
+    
   });
 
-  it("addGame should set currentGame to new Id", function() {
 
-    assert.equal(testGameId, battleshipFunctions.currentGame["gameId"]);
+});
 
+describe("Game Start", function() {
+
+  it("setPlayers should set currentGame players to current players", function() {
+
+    battleshipFunctions.setPlayers(testPlayers);
+    
+    assert.equal(battleshipFunctions.currentGame.players, testPlayers);
+    
   });
 
-  it("addGame should set currentGame players to correct players", function() {
+  it("setGame should set currentGame uid to current gameId", function() {
 
-    assert.deepEqual([testIdFitz, "0x00"], battleshipFunctions.currentGame["players"]);
-
+    battleshipFunctions.setGame(testGameId);
+    
+    assert.equal(battleshipFunctions.currentGame.uid, testGameId);
+    
   });
+
+
+  /*
 
   it("addGame should set currentGame turn to [0, 0]", function() {
 
@@ -225,7 +243,11 @@ describe("Game Creation", function() {
 
   });
 
+*/
+
 });
+
+/*
 
 games[testGameId].ships.addShip("patrol", "a4", "vertical", testIdFitz);
 
