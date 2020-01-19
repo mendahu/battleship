@@ -4,14 +4,8 @@ const _ = require('lodash');
 
 const battleshipFunctions = require('../public/scripts/battleship');
 const { generateUid } = require('../public/scripts/unique');
-const playerFunctions = require('../public/scripts/players');
+const { ships, games, players } = require('../public/scripts/data');
 const helperFunctions = require('../public/scripts/helpers');
-const gamesFunctions = require('../public/scripts/games');
-const shipsFunctions = require('../public/scripts/ships');
-
-let players = playerFunctions.players;
-let games = gamesFunctions.games;
-let ships = shipsFunctions.ships;
 
 describe("Basic Functions", function() {
 
@@ -137,6 +131,8 @@ games.addGame(testPlayers, testOptions);
 let testGameId = _.findKey(games, ["players", [testIdFitz, "0x00"]]);
 battleshipFunctions.setGame(testGameId);
 
+console.log(games);
+
 describe("Game Creation", function() {
   
   it("addGame should generate a new game with a unique 12 digit ID", function() {
@@ -171,7 +167,7 @@ describe("Game Creation", function() {
   
   it("getOpponentId should take one playerID and return their opponent given a game ID", function() {
     
-    assert.equal(helperFunctions.getOpponentId(testIdFitz, testGameId), "0x00");
+    assert.equal(games[testGameId].getOpponentId(testIdFitz), "0x00");
   });
     
   it("players should now report a game on their record", function() {

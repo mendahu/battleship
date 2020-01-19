@@ -1,5 +1,3 @@
-const { games } = require("./games");
-
 //Get column from a coordinate
 const getColumn = coordinate => coordinate[0];
 
@@ -18,7 +16,6 @@ const isValidCoord = function(coordinate, boardSize) {
     col < 97 ||
     col > 106 + (boardSize - 10)
   );
-
 };
 
 //generates a row of coordinates horizontally to the right based on a starting position and quantity
@@ -55,9 +52,6 @@ const generateRow = function(coordinate, quantity) {
   return columnArray;
 };
 
-//checks a playerId and returns their opponent playerId given a gameId
-const getOpponentId = (playerId, gameId) => games[gameId].players.filter(player => player !== playerId)[0];
-
 //returns an array of tiles that a potential ship might occupy given size, location, direction
 const getOccupiedTiles = function(coordinate, direction, size) {
 
@@ -82,38 +76,6 @@ const areValidTiles = function(tiles, boardSize) {
   return areValid;
 };
 
-//checks a board to see if a coordinate has a ship in it
-const isOccupied = function(gameId, playerId, coordinate) {
-
-  let ships;
-
-  let isSpaceOccupied = false;
-
-  //set ships object to variable for convenience
-  if (games[gameId].ships[playerId] !== undefined) {
-    ships = games[gameId].ships[playerId];
-  } else {
-    return false;
-  }
-
-
-  //loop through each ship
-  for (const ship in ships) {
-
-    //set each ship's tile array
-    let occupiedTiles = ships[ship].occupiedTiles;
-
-    //loop over each array
-    occupiedTiles.forEach(element => {
-      if (element === coordinate) {
-        isSpaceOccupied = true;
-      }
-    });
-  }
-
-  return isSpaceOccupied;
-};
-
 module.exports = {
   getColumn,
   getRow,
@@ -122,7 +84,5 @@ module.exports = {
   generateRow,
   generateColumn,
   getOccupiedTiles,
-  getOpponentId,
-  isOccupied,
   areValidTiles
 };

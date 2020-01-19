@@ -27,15 +27,6 @@ class Player extends UniqueThing {
   }
 }
 
-//creates an object to house players
-//players.addPlayer is a method to create a new player
-let players = {
 
-  addPlayer: function(name, uid) {
-    let newPlayer = new Player(name, uid);
-    let newPlayerUid = newPlayer.uid;
-    players[newPlayerUid] = newPlayer;
-  }
-};
 
-module.exports = { Player, players };
+module.exports = { Player };
