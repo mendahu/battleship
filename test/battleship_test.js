@@ -236,12 +236,12 @@ describe("Ship Adder", function() {
     assert.equal(testShip.direction , "vertical");
   });
   
-  /*
   it("addShip should create a new ship with the correct occupied tiles", function() {
     
-    assert.deepEqual(testShip.occupiedTiles , ["a4", "a5"]);
+    assert.deepEqual(testShip.tiles , ["a4", "a5"]);
     
   });
+  /*
   
   it("addShip should not create a ship if a coordinate would go off the board", function() {
     
