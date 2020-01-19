@@ -241,27 +241,20 @@ describe("Ship Adder", function() {
     assert.deepEqual(testShip.tiles , ["a4", "a5"]);
     
   });
-  /*
   
-  it("addShip should not create a ship if a coordinate would go off the board", function() {
-    
-    games[testGameId].ships.addShip("battleship", "j4", "horizontal", testIdFitz);
-    
-    let ships = Object.keys(games[testGameId].ships[testIdFitz]);
-
-    assert.equal(ships.length, 1);
-    
-  });
   
   it("addShip should not create a ship if a coordinate covers another ship", function() {
     
-    games[testGameId].ships.addShip("battleship", "a3", "vertical", testIdFitz);
+    ships.addShip(testGameId, testIdFitz, "battleship", "a3", "vertical");
+
+    const testBadShipId = _.findKey(ships, ["class", "battleship"]);
     
-    let ships = Object.keys(games[testGameId].ships[testIdFitz]);
+    console.log(ships);
 
-    assert.equal(ships.length, 1);
-
+    assert.equal(ships[testBadShipId], undefined);
+    
   });
+  /*
   
   it("addShip should create a new ship with the correct healthy status", function() {
 

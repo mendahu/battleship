@@ -36,6 +36,7 @@ let ships = {
   
   //Adds a new ship to the database
   addShip: function(gameId, playerId, shipClass, coord, direction) {
+
     let boardSize = games[gameId].options.boardSize;
 
     let occupiedTiles = getOccupiedTiles(coord, direction, shipLibrary[shipClass]);
