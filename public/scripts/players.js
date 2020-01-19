@@ -1,4 +1,3 @@
-const { games, getWinCount } = require("./battleship");
 const { UniqueThing } = require("./unique");
 
 //Player class for creating new players
@@ -7,6 +6,8 @@ class Player extends UniqueThing {
   constructor(name) {
     super();
     this.name = name;
+    this.games = [];
+    this.wins = 0;
   }
 }
 
@@ -15,7 +16,7 @@ class Player extends UniqueThing {
 
 let players = {
 
-  0x00: { //This is the computer player
+  "0x00": { //This is the computer player
     uid: "0x00",
     name: "Computer",
     //games: games.getGameList(this),

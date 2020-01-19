@@ -2,9 +2,9 @@ const chai = require('chai');
 const assert = chai.assert;
 const _ = require('lodash');
 
-const battleshipFunctions = require('../public/scripts/battleship.js');
-const playerFunctions = require('../public/scripts/players.js');
-const helperFunctions = require('../public/scripts/helpers.js');
+const battleshipFunctions = require('../public/scripts/battleship');
+const playerFunctions = require('../public/scripts/players');
+const helperFunctions = require('../public/scripts/helpers');
 
 let players = playerFunctions.players;
 let games = battleshipFunctions.games;
@@ -123,6 +123,12 @@ describe("Player Creation", function() {
 
   });
 
+  it("addPlayer should generate a new player whose UID matches", function() {
+
+    assert.equal(testIdFitz, players[testIdFitz].uid);
+
+  });
+
   it("addPlayer should generate a new player with an empty array of games", function() {
 
     assert.deepEqual(players[testIdFitz]["games"], []);
@@ -142,6 +148,10 @@ describe("Player Creation", function() {
   });
 
 });
+
+console.log(players);
+
+/*
 
 games.addGame(testIdFitz, "0x00", true, 5, 1, 12);
 
@@ -346,4 +356,7 @@ describe("Take a Turn", function() {
 
   });
 
+  
 });
+
+*/
