@@ -8,44 +8,14 @@ const {
   isValidCoord,
   getNthLetterFrom,
   generateRow,
+  generateColumn,
   getOccupiedTiles,
   getOpponentId,
+  isOccupied
 } = require('./helpers');
 
 //Empty object to house shorthand data for the current game
 let currentGame = {};
-
-//checks a board to see if a coordinate has a ship in it
-const isOccupied = function(gameId, playerId, coordinate) {
-
-  let ships;
-
-  let isSpaceOccupied = false;
-
-  //set ships object to variable for convenience
-  if (games[gameId].ships[playerId] !== undefined) {
-    ships = games[gameId].ships[playerId];
-  } else {
-    return false;
-  }
-
-
-  //loop through each ship
-  for (const ship in ships) {
-
-    //set each ship's tile array
-    let occupiedTiles = ships[ship].occupiedTiles;
-
-    //loop over each array
-    occupiedTiles.forEach(element => {
-      if (element === coordinate) {
-        isSpaceOccupied = true;
-      }
-    });
-  }
-
-  return isSpaceOccupied;
-};
 
 let games = {
   addGame: function(playerId1, playerId2, smartPC, amountOfShips, shotsPerTurn, boardSize) {
@@ -208,28 +178,8 @@ const getWinCount = function(playerId) {
   return winCount;
 };
 
-//creates an object to house players
-//players.addPlayer is a method to create a new UID
-let players = {
-  0x00: { //This is the computer player
-    name: "Computer",
-    games: games.getGameList(this),
-    wins: getWinCount(this),
-  },
-  addPlayer: function(name) {
-    //generates a new player object with a UID
-    this[generateUid()] = {
-      name: name, //player's name string
-      games: games.getGameList(this),
-      wins: getWinCount(this),
-    };
-  }
-
-};
-
 module.exports = {
   currentGame,
-  players,
   games,
   checkForHit,
   getShipStatus

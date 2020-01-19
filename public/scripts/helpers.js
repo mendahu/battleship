@@ -1,3 +1,5 @@
+const { games } = require("./battleship");
+
 //returns an 12-digit unique ID for use with games, users, and ships
 const generateUid = function() {
   return Math.floor((1 + Math.random()) * 0x1000000000000).toString(16).substring(1);
@@ -101,6 +103,38 @@ const getOccupiedTiles = function(coordinate, direction, size, boardSize) {
   }
 };
 
+//checks a board to see if a coordinate has a ship in it
+const isOccupied = function(gameId, playerId, coordinate) {
+
+  let ships;
+
+  let isSpaceOccupied = false;
+
+  //set ships object to variable for convenience
+  if (games[gameId].ships[playerId] !== undefined) {
+    ships = games[gameId].ships[playerId];
+  } else {
+    return false;
+  }
+
+
+  //loop through each ship
+  for (const ship in ships) {
+
+    //set each ship's tile array
+    let occupiedTiles = ships[ship].occupiedTiles;
+
+    //loop over each array
+    occupiedTiles.forEach(element => {
+      if (element === coordinate) {
+        isSpaceOccupied = true;
+      }
+    });
+  }
+
+  return isSpaceOccupied;
+};
+
 module.exports = {
   generateUid,
   shipLibrary,
@@ -110,6 +144,8 @@ module.exports = {
   isValidCoord,
   getNthLetterFrom,
   generateRow,
+  generateColumn,
   getOccupiedTiles,
   getOpponentId,
+  isOccupied
 };

@@ -2,16 +2,18 @@ const chai = require('chai');
 const assert = chai.assert;
 const _ = require('lodash');
 
-const battleshipFunctions = require('../battleship.js');
+const battleshipFunctions = require('../public/scripts/battleship.js');
+const playerFunctions = require('../public/scripts/players.js');
+const helperFunctions = require('../public/scripts/helpers.js');
 
-let players = battleshipFunctions.players;
+let players = playerFunctions.players;
 let games = battleshipFunctions.games;
 
 describe("Basic Functions", function() {
 
   it("generateUid() should return a twelve digit string", function() {
 
-    const generateUid = battleshipFunctions.generateUid();
+    const generateUid = helperFunctions.generateUid();
 
     assert.isTrue(generateUid.length === 12 && typeof generateUid === "string");
 
@@ -19,7 +21,7 @@ describe("Basic Functions", function() {
 
   it("getShipSize() should return the length of a ship", function() {
 
-    const submarineShipSize = battleshipFunctions.getShipSize("submarine");
+    const submarineShipSize = helperFunctions.getShipSize("submarine");
 
     assert.isTrue(submarineShipSize === 3);
 
@@ -27,7 +29,7 @@ describe("Basic Functions", function() {
 
   it("getColumn should return the letter component of a coordinate", function() {
 
-    const column = battleshipFunctions.getColumn("d4");
+    const column = helperFunctions.getColumn("d4");
 
     assert.isTrue(column === "d");
 
@@ -35,7 +37,7 @@ describe("Basic Functions", function() {
 
   it("getRow should return the Number component of a coordinate", function() {
 
-    const row = battleshipFunctions.getRow("d4");
+    const row = helperFunctions.getRow("d4");
 
     assert.isTrue(row === 4);
 
@@ -46,27 +48,27 @@ describe("Basic Functions", function() {
 describe("Cordinate Manipulation", function() {
 
 
-  it("boardValidator should return true if a coordinate is in the board", function() {
+  it("isValidCoord should return true if a coordinate is in the board", function() {
 
-    assert.isTrue(battleshipFunctions.boardValidator("d4", 10));
-
-  });
-
-  it("boardValidator should return false if a coordinate is off the board", function() {
-
-    assert.isFalse(battleshipFunctions.boardValidator("d11", 10));
+    assert.isTrue(helperFunctions.isValidCoord("d4", 10));
 
   });
 
-  it("boardValidator should return false if a coordinate is off the board", function() {
+  it("isValidCoord should return false if a coordinate is off the board", function() {
 
-    assert.isFalse(battleshipFunctions.boardValidator("l3",  10));
+    assert.isFalse(helperFunctions.isValidCoord("d11", 10));
+
+  });
+
+  it("isValidCoord should return false if a coordinate is off the board", function() {
+
+    assert.isFalse(helperFunctions.isValidCoord("l3",  10));
 
   });
 
   it("generateRow should return a row of coordinates equal to the size passed through", function() {
 
-    const row = battleshipFunctions.generateRow("d4", 5, 10);
+    const row = helperFunctions.generateRow("d4", 5, 10);
 
     assert.deepEqual(row, ["d4", "e4", "f4", "g4", "h4"]);
 
@@ -74,7 +76,7 @@ describe("Cordinate Manipulation", function() {
 
   it("generateRow should return false if the row would push over the edge of the board", function() {
 
-    const row = battleshipFunctions.generateRow("g4", 5, 10);
+    const row = helperFunctions.generateRow("g4", 5, 10);
 
     assert.isFalse(row);
 
@@ -83,7 +85,7 @@ describe("Cordinate Manipulation", function() {
 
   it("getNthLetterFrom should return number of letters further down the alphabet", function() {
 
-    const letterCheck = battleshipFunctions.getNthLetterFrom("a", 2);
+    const letterCheck = helperFunctions.getNthLetterFrom("a", 2);
 
     assert.equal(letterCheck, "c");
 
@@ -91,7 +93,7 @@ describe("Cordinate Manipulation", function() {
 
   it("generateColumnn should return a row of coordinates equal to the size passed through", function() {
 
-    const column = battleshipFunctions.generateColumn("d4", 5, 10);
+    const column = helperFunctions.generateColumn("d4", 5, 10);
 
     assert.deepEqual(column, ["d4", "d5", "d6", "d7", "d8"]);
 
@@ -99,7 +101,7 @@ describe("Cordinate Manipulation", function() {
 
   it("generateColumn should return false if the column would push over the edge of the board", function() {
 
-    const column = battleshipFunctions.generateColumn("h8", 5, 10);
+    const column = helperFunctions.generateColumn("h8", 5, 10);
 
     assert.isFalse(column);
 
@@ -185,7 +187,7 @@ describe("Game Creation", function() {
 
   it("getOpponentId should take one playerID and return their opponent given a game ID", function() {
 
-    assert.equal(battleshipFunctions.getOpponentId(testIdFitz, testGameId), "0x00");
+    assert.equal(helperFunctions.getOpponentId(testIdFitz, testGameId), "0x00");
 
   });
 
