@@ -42,8 +42,10 @@ let ships = {
     let occupiedTiles = getOccupiedTiles(coord, direction, shipLibrary[shipClass]);
     let validTiles = areValidTiles(occupiedTiles, boardSize);
 
+    let freeSpace = true;
+
     //confirms that the ship position is on the board first
-    if (validTiles) {
+    if (validTiles && freeSpace) {
 
       //creates new ship
       let newShip = new Ship(gameId, playerId, shipClass, coord, direction);

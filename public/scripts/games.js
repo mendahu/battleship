@@ -7,14 +7,14 @@ class Game extends UniqueThing {
     this.players = players;
     this.winner = "No Winner Yet";
     this.options = options;
-    this.ships = {
-      [players[0]]: {},
-      [players[1]]: {}
+  }
+
+  get ships() {
+    let shipObject = {
+      [this.players[0]]: [],
+      [this.players[1]]: []
     };
-    this.shots = {
-      [players[0]]: [],
-      [players[1]]: []
-    };
+    return shipObject;
   }
 
 }
