@@ -14,7 +14,6 @@ let players = {
   }
 };
 
-
 let games = {
   addGame: function(players, options) {
 
@@ -22,6 +21,20 @@ let games = {
     let newGameUid = newGame.uid;
     games[newGameUid] = newGame;
   },
+
+  isOccupied: function(playerId, coord) {
+
+    this.ships[playerId].forEach(ship => {
+      console.log(this.ships);
+      ship.tiles.forEach(tile => {
+        if (tile === coord) {
+          return true;
+        }
+      });
+    });
+
+    return false;
+  }
 };
 
 /*

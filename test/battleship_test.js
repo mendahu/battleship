@@ -131,8 +131,6 @@ games.addGame(testPlayers, testOptions);
 let testGameId = _.findKey(games, ["players", [testIdFitz, "0x00"]]);
 battleshipFunctions.setGame(testGameId);
 
-console.log(games);
-
 describe("Game Creation", function() {
   
   it("addGame should generate a new game with a unique 12 digit ID", function() {
@@ -163,6 +161,16 @@ describe("Game Creation", function() {
   it("addGame should generate a new game with the correct board size", function() {
     
     assert.equal(games[testGameId].options.boardSize, 12);
+  });
+
+  it("addGame should generate a new game with no ships added to first player", function() {
+    
+    assert.deepEqual(games[testGameId].ships[testIdFitz], []);
+  });
+  
+  it("addGame should generate a new game with no ships added to second player", function() {
+    
+    assert.deepEqual(games[testGameId].ships["0x00"], []);
   });
   
   it("getOpponentId should take one playerID and return their opponent given a game ID", function() {
@@ -238,15 +246,20 @@ describe("Ship Adder", function() {
     
   });
   
+  it("games.isOccupied should report false when checking the coordinates of a ship", function() {
+    
+    console.log(ships);
+    assert.isFalse(games.isOccupied(testIdFitz, "a4"));
+    
+  });
   
   it("addShip should not create a ship if a coordinate covers another ship", function() {
     
+
     ships.addShip(testGameId, testIdFitz, "battleship", "a3", "vertical");
 
     const testBadShipId = _.findKey(ships, ["class", "battleship"]);
     
-    console.log(ships);
-
     assert.equal(ships[testBadShipId], undefined);
     
   });

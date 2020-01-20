@@ -1,5 +1,4 @@
 const { UniqueThing } = require("./unique");
-const { games } = require('./games');
 
 //Player class for creating new players
 class Player extends UniqueThing {
@@ -15,6 +14,7 @@ class Player extends UniqueThing {
 
   get games() {
     let gameList = [];
+    /*
     for (const game in games) {
       let players = games[game].players;
       if (players) {
@@ -23,6 +23,7 @@ class Player extends UniqueThing {
         }
       }
     }
+    */
     return gameList;
   }
 }
