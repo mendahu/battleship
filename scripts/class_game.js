@@ -19,6 +19,31 @@ class Game extends UniqueThing {
     return this.players.filter(player => player !== playerId)[0];
   }
 
+  startGame() {
+    this.state = "In Progress";
+  }
+
+  endGame() {
+    this.state = "Completed";
+  }
+
+  get boardSize() {
+    return this.options.boardSize;
+  }
+
+  //checks if a coordinate is occupied by a ship
+  isOccupied(playerId, coord) {
+    let shipArray = this.ships[playerId];
+
+    for (const ship of shipArray) {
+      for (const coordinate of ship.tiles) {
+        if (coordinate === coord) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 }
 
 module.exports = { Game };

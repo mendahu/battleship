@@ -1,7 +1,7 @@
 const { getOccupiedTiles, areValidTiles } = require('./helpers');
-const { Player } = require('./players');
-const { Game } = require('./games');
-const { Ship, shipLibrary } = require('./ships');
+const { Player } = require('./class_player');
+const { Game } = require('./class_game');
+const { Ship, shipLibrary } = require('./class_ship');
 
 //creates an object to house players
 //players.addPlayer is a method to create a new player
@@ -22,21 +22,7 @@ let games = {
     players[playerIds[0]].associateGame(newGameUid);
     players[playerIds[1]].associateGame(newGameUid);
   },
-/*
-  isOccupied: function(playerId, coord) {
-
-    this.ships[playerId].forEach(ship => {
-      console.log(this.ships);
-      ship.tiles.forEach(tile => {
-        if (tile === coord) {
-          return true;
-        }
-      });
-    });
-
-    return false;
-  }
-  */
+  
 };
 
 /*
@@ -123,7 +109,7 @@ let ships = {
   //Adds a new ship to the database
   addShip: function(gameId, playerId, shipClass, coord, direction) {
 
-    let boardSize = games[gameId].options.boardSize;
+    let boardSize = games[gameId].boardSize;
 
     let occupiedTiles = getOccupiedTiles(coord, direction, shipLibrary[shipClass]);
     let validTiles = areValidTiles(occupiedTiles, boardSize);

@@ -1,16 +1,5 @@
 //const _ = require('lodash')
-const { games } = require('./games');
-
-//Empty object to house shorthand data for the current game
-let currentGame = {
-  turn: [0, 0]
-};
-
-//sets current players to current game instance
-const setPlayers = (players) => currentGame.players = players;
-
-//sets current gameID to current game instance
-const setGame = (gameId) => currentGame.uid = gameId;
+const { games } = require('./class_game');
 
 /*
 
@@ -72,9 +61,6 @@ const getWinCount = function(playerId) {
 */
 
 module.exports = {
-  currentGame,
-  setPlayers,
-  setGame,
   //checkForHit,
   //getShipStatus
 };

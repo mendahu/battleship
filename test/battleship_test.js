@@ -2,7 +2,6 @@ const chai = require('chai');
 const assert = chai.assert;
 const _ = require('lodash');
 
-const battleshipFunctions = require('../scripts/battleship');
 const { generateUid } = require('../scripts/unique');
 const { ships, games, players } = require('../scripts/data');
 const helperFunctions = require('../scripts/helpers');
@@ -82,7 +81,6 @@ players.addPlayer("Juno", "juno@test.com", "spoon");
 let testIdFitz = _.findKey(players, ["name", "Fitz"]);
 let testIdJuno = _.findKey(players, ["name", "Juno"]);
 let testPlayers = [testIdFitz, "0x00"];
-battleshipFunctions.setPlayers(testPlayers);
 
 describe("Player Creation", function() {
 
@@ -126,7 +124,6 @@ describe("Player Creation", function() {
 let testOptions = { smartPC: true, shipCount: 5, shotsPerTurn: 1, boardSize: 12 };
 games.addGame(testPlayers, testOptions);
 let testGameId = _.findKey(games, ["players", [testIdFitz, "0x00"]]);
-battleshipFunctions.setGame(testGameId);
 
 describe("Game Creation", function() {
   
@@ -181,24 +178,9 @@ describe("Game Creation", function() {
   });
 });
 
-describe("Game Start", function() {
-
-  it("setPlayers should set currentGame players to current players", function() {
-    
-    assert.equal(battleshipFunctions.currentGame.players, testPlayers);
-  });
-
-  it("setGame should set currentGame uid to current gameId", function() {
-    
-    assert.equal(battleshipFunctions.currentGame.uid, testGameId);
-  });
-});
-
-
+//test code to create a ship
 ships.addShip(testGameId, testIdFitz, "patrol", "a4", "vertical");
-
 const testShipId = _.findKey(ships, ["class", "patrol"]);
-
 let testShip = ships[testShipId];
 
 describe("Ship Adder", function() {
@@ -222,15 +204,6 @@ describe("Ship Adder", function() {
     
     assert.equal(testShip.coordinate, "a4");
   });
-      
-  it("addShip should not create a ship if any ship tiles roll off the board", function() {
-    
-    ships.addShip(testGameId, testIdFitz, "carrier", "b10", "vertical");
-
-    const testBadShipId = _.findKey(ships, ["class", "carrier"]);
-
-    assert.equal(testBadShipId, undefined);
-  });
   
   it("addShip should create a new ship with the correct direction", function() {
     
@@ -243,10 +216,18 @@ describe("Ship Adder", function() {
     
   });
   
+  it("addShip should not create a ship if any ship tiles roll off the board", function() {
+
+    ships.addShip(testGameId, testIdFitz, "carrier", "b10", "vertical");
+
+    const testBadShipId = _.findKey(ships, ["class", "carrier"]);
+
+    assert.equal(testBadShipId, undefined);
+  });
+  
   it("games.isOccupied should report false when checking the coordinates of a ship", function() {
     
-    console.log(ships);
-    assert.isFalse(games.isOccupied(testIdFitz, "a4"));
+    assert.isFalse(games[testGameId].isOccupied(testIdFitz, "a4"));
     
   });
   
