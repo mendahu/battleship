@@ -12,6 +12,11 @@ class Player extends UniqueThing {
     this.name = name;
     this.email = email;
     this.password = password;
+    this.games = [];
+  }
+
+  associateGame(gameId) {
+    this.games.push(gameId);
   }
 }
 

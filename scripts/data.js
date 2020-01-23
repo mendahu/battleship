@@ -15,11 +15,12 @@ let players = {
 };
 
 let games = {
-  addGame: function(players, options) {
-
-    let newGame = new Game(players, options);
+  addGame: function(playerIds, options) {
+    let newGame = new Game(playerIds, options);
     let newGameUid = newGame.uid;
     games[newGameUid] = newGame;
+    players[playerIds[0]].associateGame(newGameUid);
+    players[playerIds[1]].associateGame(newGameUid);
   },
 /*
   isOccupied: function(playerId, coord) {

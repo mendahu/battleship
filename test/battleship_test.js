@@ -115,6 +115,11 @@ describe("Player Creation", function() {
 
     assert.equal(players[testIdJuno]["name"], "Juno");
   });
+
+  it("addPlayer should generate a new player with an empty game array", function() {
+
+    assert.equal(players[testIdJuno]["games"].length, 0);
+  });
 });
 
 //Sets test code up using real functions to simulate actual game experience
