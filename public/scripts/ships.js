@@ -5,9 +5,11 @@ const { getOccupiedTiles } = require('./helpers');
 let shipLibrary = {
   carrier: 5,
   battleship: 4,
+  destroyer: 4,
   submarine: 3,
   cruiser: 3,
-  patrol: 2
+  frigate: 3,
+  patrol: 2,
 };
 
 //Ship class for creating new ships
