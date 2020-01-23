@@ -76,9 +76,9 @@ describe("Cordinate Manipulation", function() {
 });
 
 //Sets test code up using real functions to simulate actual game experience
-players.addPlayer("Computer", "0x00");
-players.addPlayer("Fitz");
-players.addPlayer("Juno");
+players.addPlayer("Computer", "computer@test.com", "password", "0x00");
+players.addPlayer("Fitz", "fitz@test.com", "chonker");
+players.addPlayer("Juno", "juno@test.com", "spoon");
 let testIdFitz = _.findKey(players, ["name", "Fitz"]);
 let testIdJuno = _.findKey(players, ["name", "Juno"]);
 let testPlayers = [testIdFitz, "0x00"];
@@ -106,17 +106,9 @@ describe("Player Creation", function() {
     assert.equal(testIdFitz, players[testIdFitz].uid);
   });
   
-  it("addPlayer should generate a new player with an empty array of games", function() {
+  it("addPlayer should generate a new player with correct email", function() {
     
-    players.addPlayer("Jake");
-    let testIdJake = _.findKey(players, ["name", "Jake"]);
-
-    assert.deepEqual(players[testIdJake].games, []);
-  });
-
-  it("addPlayer should generate a new player 0 wins", function() {
-
-    assert.equal(players[testIdFitz]["wins"], 0);
+    assert.equal(players[testIdFitz].email, "fitz@test.com");
   });
 
   it("addPlayer should generate a new player with the correct inputted name", function() {

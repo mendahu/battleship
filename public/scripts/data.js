@@ -7,8 +7,8 @@ const { Ship, shipLibrary } = require('./ships');
 //players.addPlayer is a method to create a new player
 let players = {
 
-  addPlayer: function(name, uid) {
-    let newPlayer = new Player(name, uid);
+  addPlayer: function(name, email, password, uid) {
+    let newPlayer = new Player(name, email, password, uid);
     let newPlayerUid = newPlayer.uid;
     players[newPlayerUid] = newPlayer;
   }

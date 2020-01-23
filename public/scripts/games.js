@@ -5,6 +5,7 @@ class Game extends UniqueThing {
   constructor(players, options) {
     super();
     this.players = players;
+    this.state = "Not Started";
     this.winner = "No Winner Yet";
     this.options = options;
   }
