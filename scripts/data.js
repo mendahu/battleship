@@ -114,7 +114,7 @@ let ships = {
     let occupiedTiles = getOccupiedTiles(coord, direction, shipLibrary[shipClass]);
     let validTiles = areValidTiles(occupiedTiles, boardSize);
 
-    let freeSpace = true;
+    let freeSpace = !games[gameId].areOccupied(playerId, occupiedTiles);
 
     //confirms that the ship position is on the board first
     if (validTiles && freeSpace) {
@@ -124,6 +124,9 @@ let ships = {
       let newShipId = newShip.uid;
       ships[newShipId] = newShip;
       games[gameId].associateShip(playerId, newShipId);
+      occupiedTiles.forEach(coord => {
+        games[gameId].boards[playerId].push(coord);
+      });
     }
   }
 };

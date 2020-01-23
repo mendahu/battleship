@@ -12,6 +12,10 @@ class Game extends UniqueThing {
       [players[0]]: [],
       [players[1]]: [],
     };
+    this.boards = {
+      [players[0]]: [],
+      [players[1]]: [],
+    };
   }
 
   //checks a playerId and returns their opponent playerId given a gameId
@@ -35,15 +39,12 @@ class Game extends UniqueThing {
     this.ships[playerId].push(shipId);
   }
 
-  //checks if a coordinate is occupied by a ship
+  //checks if a coordinate is occupied by a ship on a player's board
   isOccupied(playerId, coord) {
-    let shipArray = this.ships[playerId];
-    console.log(shipArray);
-    for (const ship of shipArray) {
-      for (const coordinate of ship.tiles) {
-        if (coordinate === coord) {
-          return true;
-        }
+    let board = this.boards[playerId];
+    for (const coordinate of board) {
+      if (coordinate === coord) {
+        return true;
       }
     }
     return false;

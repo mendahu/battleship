@@ -229,22 +229,19 @@ describe("Ship Adder", function() {
   
   it("games.isOccupied should report true when checking if an occupied tile is occupied", function() {
     
-    console.log(ships);
     assert.isTrue(games[testGameId].isOccupied(testIdFitz, "a4"));
     
   });
   
-  it("games.areOccupied should report false when checking an array of coordinates of a ship", function() {
+  it("games.areOccupied should report true when checking an array of coordinates of a ship", function() {
     
-    assert.isFalse(games[testGameId].isOccupied(testIdFitz, "a4"));
+    assert.isFalse(games[testGameId].areOccupied(testIdFitz, "a4"));
     
   });
   
   it("addShip should not create a ship if a coordinate covers another ship", function() {
     
-
     ships.addShip(testGameId, testIdFitz, "battleship", "a3", "vertical");
-
     const testBadShipId = _.findKey(ships, ["class", "battleship"]);
     
     assert.equal(ships[testBadShipId], undefined);
