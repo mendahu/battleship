@@ -123,6 +123,7 @@ let ships = {
       let newShip = new Ship(gameId, playerId, shipClass, coord, direction);
       let newShipId = newShip.uid;
       ships[newShipId] = newShip;
+      games[gameId].associateShip(playerId, newShipId);
     }
   }
 };

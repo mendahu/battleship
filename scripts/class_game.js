@@ -31,15 +31,29 @@ class Game extends UniqueThing {
     return this.options.boardSize;
   }
 
+  associateShip(playerId, shipId) {
+    this.ships[playerId].push(shipId);
+  }
+
   //checks if a coordinate is occupied by a ship
   isOccupied(playerId, coord) {
     let shipArray = this.ships[playerId];
-
+    console.log(shipArray);
     for (const ship of shipArray) {
       for (const coordinate of ship.tiles) {
         if (coordinate === coord) {
           return true;
         }
+      }
+    }
+    return false;
+  }
+
+  //checks if an array of coordinates pass over any ships
+  areOccupied(playerId, arrayOfCoords) {
+    for (const coord of arrayOfCoords) {
+      if (this.isOccupied(playerId, coord)) {
+        return true;
       }
     }
     return false;

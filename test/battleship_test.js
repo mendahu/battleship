@@ -125,6 +125,7 @@ let testOptions = { smartPC: true, shipCount: 5, shotsPerTurn: 1, boardSize: 12 
 games.addGame(testPlayers, testOptions);
 let testGameId = _.findKey(games, ["players", [testIdFitz, "0x00"]]);
 
+
 describe("Game Creation", function() {
   
   it("addGame should generate a new game with a unique 12 digit ID", function() {
@@ -155,11 +156,6 @@ describe("Game Creation", function() {
   it("addGame should generate a new game with the correct board size", function() {
     
     assert.equal(games[testGameId].options.boardSize, 12);
-  });
-
-  it("addGame should generate a new game with no ships added to first player", function() {
-    
-    assert.deepEqual(games[testGameId].ships[testIdFitz], []);
   });
   
   it("addGame should generate a new game with no ships added to second player", function() {
@@ -216,6 +212,12 @@ describe("Ship Adder", function() {
     
   });
   
+  it("addShip should associate the ship to the correct game", function() {
+    
+    assert.deepEqual(games[testGameId].ships[testIdFitz], [testShipId]);
+    
+  });
+  
   it("addShip should not create a ship if any ship tiles roll off the board", function() {
 
     ships.addShip(testGameId, testIdFitz, "carrier", "b10", "vertical");
@@ -225,7 +227,14 @@ describe("Ship Adder", function() {
     assert.equal(testBadShipId, undefined);
   });
   
-  it("games.isOccupied should report false when checking the coordinates of a ship", function() {
+  it("games.isOccupied should report true when checking if an occupied tile is occupied", function() {
+    
+    console.log(ships);
+    assert.isTrue(games[testGameId].isOccupied(testIdFitz, "a4"));
+    
+  });
+  
+  it("games.areOccupied should report false when checking an array of coordinates of a ship", function() {
     
     assert.isFalse(games[testGameId].isOccupied(testIdFitz, "a4"));
     
