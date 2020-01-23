@@ -8,19 +8,10 @@ class Game extends UniqueThing {
     this.state = "Not Started";
     this.winner = "No Winner Yet";
     this.options = options;
-  }
-
-  get ships() {
-    let shipObject = {
-      [this.players[0]]: [],
-      [this.players[1]]: []
+    this.ships = {
+      [players[0]]: [],
+      [players[1]]: [],
     };
-
-    //for (const ship in ships) {
-    //
-    //}
-
-    return shipObject;
   }
 
   //checks a playerId and returns their opponent playerId given a gameId

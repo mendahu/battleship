@@ -21,7 +21,7 @@ let games = {
     let newGameUid = newGame.uid;
     games[newGameUid] = newGame;
   },
-
+/*
   isOccupied: function(playerId, coord) {
 
     this.ships[playerId].forEach(ship => {
@@ -35,6 +35,7 @@ let games = {
 
     return false;
   }
+  */
 };
 
 /*
