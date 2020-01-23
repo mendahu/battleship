@@ -2,10 +2,10 @@ const chai = require('chai');
 const assert = chai.assert;
 const _ = require('lodash');
 
-const battleshipFunctions = require('../public/scripts/battleship');
-const { generateUid } = require('../public/scripts/unique');
-const { ships, games, players } = require('../public/scripts/data');
-const helperFunctions = require('../public/scripts/helpers');
+const battleshipFunctions = require('../scripts/battleship');
+const { generateUid } = require('../scripts/unique');
+const { ships, games, players } = require('../scripts/data');
+const helperFunctions = require('../scripts/helpers');
 
 describe("Basic Functions", function() {
 
