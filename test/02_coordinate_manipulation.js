@@ -10,12 +10,12 @@ describe("02 - Cordinate Manipulation", function() {
     assert.isTrue(helperFunctions.isValidCoord("d4", 10));
   });
 
-  it("isValidCoord should return false if a coordinate is off the board", function() {
+  it("isValidCoord should return false if a row is off the board", function() {
 
     assert.isFalse(helperFunctions.isValidCoord("d11", 10));
   });
 
-  it("isValidCoord should return false if a coordinate is off the board", function() {
+  it("isValidCoord should return false if a column is off the board", function() {
 
     assert.isFalse(helperFunctions.isValidCoord("l3",  10));
   });
@@ -34,7 +34,7 @@ describe("02 - Cordinate Manipulation", function() {
     assert.equal(letterCheck, "c");
   });
 
-  it("generateColumnn should return a row of coordinates equal to the size passed through", function() {
+  it("generateColumnn should return a column of coordinates equal to the size passed through", function() {
 
     const column = helperFunctions.generateColumn("d4", 5);
 
