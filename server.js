@@ -31,7 +31,21 @@ app.get("/", (req, res) => {
   res.render("welcome", { user: undefined });
 });
 
-// 404 CATCH
+/*******************************
+POST ROUTING
+*******************************/
+
+app.post("/register", (req, res) => {
+  const { name, email, password } = req.body;
+
+  
+  res.render("welcome", { user: undefined });
+});
+
+/*******************************
+404 ROUTING
+*******************************/
+
 app.use(function(req, res, next) {
   res.status(404).send("Path or File not found.");
 });
