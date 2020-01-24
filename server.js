@@ -42,35 +42,49 @@ app.post("/register", (req, res) => {
 
   //checks if email or password were empty
   if (!(email || password)) {
-    let errorCode = 400;
-    let errorMsg = "Account creation requires a username and password";
+    const errorCode = 400;
+    const errorMsg = "Account creation requires a username and password";
     res.status(errorCode);
     return res.render("error", { user: "", errorMsg, errorCode });
   }
-
+  
   //checks if email was already in use
   if (playerId) {
-    let errorCode = 400;
-    let errorMsg = "That email already has an acccount!";
+    const errorCode = 400;
+    const errorMsg = "That email already has an acccount!";
     res.status(errorCode);
-    return res.render("error", { user: "", errorMsg, errorCode });
+    return res.render("error", { user: {}, errorMsg, errorCode });
   }
 
-  let hashedPassword = bcrypt.hashSync(password, 10);
+  const hashedPassword = bcrypt.hashSync(password, 10);
 
   const newPlayerId = players.addPlayer(name, email, hashedPassword);
   req.session["user_id"] = newPlayerId;
-
-  console.log(players);
 
   res.render("newgame");
 });
 
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
+  const playerId = players.getPlayerIdByEmail(email);
 
+  //checks if email or password were empty
+  if (!(email || password)) {
+    const errorCode = 400;
+    const errorMsg = "Login requires an email and password to authenticate!";
+    res.status(errorCode);
+    return res.render("error", { user: {}, errorMsg, errorCode });
+  }
 
-  res.render("welcome", { user: undefined });
+  //validate crentials
+  if (!players.doesAuthenticate(email, password)) {
+    const errorCode = 403;
+    const errorMsg = "Invalid login credentials!";
+    res.status(errorCode);
+    return res.render("error", { user: "", errorMsg, errorCode });
+  }
+
+  res.render("newgame", { user: players[playerId] });
 });
 
 /*******************************
