@@ -45,7 +45,7 @@ app.post("/register", (req, res) => {
     const errorCode = 400;
     const errorMsg = "Account creation requires a username and password";
     res.status(errorCode);
-    return res.render("error", { user: "", errorMsg, errorCode });
+    return res.render("error", { user: undefined, errorMsg, errorCode });
   }
   
   //checks if email was already in use
@@ -53,7 +53,7 @@ app.post("/register", (req, res) => {
     const errorCode = 400;
     const errorMsg = "That email already has an acccount!";
     res.status(errorCode);
-    return res.render("error", { user: {}, errorMsg, errorCode });
+    return res.render("error", { user: undefined, errorMsg, errorCode });
   }
 
   const hashedPassword = bcrypt.hashSync(password, 10);
@@ -61,27 +61,31 @@ app.post("/register", (req, res) => {
   const newPlayerId = players.addPlayer(name, email, hashedPassword);
   req.session["user_id"] = newPlayerId;
 
-  res.render("newgame");
+  res.render("newgame", { user: players[newPlayerId] });
 });
 
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
   const playerId = players.getPlayerIdByEmail(email);
+  console.log(email, password, playerId);
 
   //checks if email or password were empty
   if (!(email || password)) {
+    console.log("hit an empty email or pass");
     const errorCode = 400;
     const errorMsg = "Login requires an email and password to authenticate!";
     res.status(errorCode);
-    return res.render("error", { user: {}, errorMsg, errorCode });
+    return res.render("error", { user: undefined, errorMsg, errorCode });
   }
-
+  
   //validate crentials
-  if (!players.doesAuthenticate(email, password)) {
+  if (!players.doesAuthenticate(email, password, playerId)) {
+    console.log("does not authenticate");
+    console.log(players.doesAuthenticate(email, password, playerId));
     const errorCode = 403;
     const errorMsg = "Invalid login credentials!";
     res.status(errorCode);
-    return res.render("error", { user: "", errorMsg, errorCode });
+    return res.render("error", { user: undefined, errorMsg, errorCode });
   }
 
   res.render("newgame", { user: players[playerId] });

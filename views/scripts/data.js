@@ -24,9 +24,12 @@ let players = {
     return false;
   },
 
-  doesAuthenticate: (email, password) => {
-    const playerId = this.getPlayerIdByEmail(email);
-    return (playerId)
+  doesAuthenticate: (email, password, playerId) => {
+    if (!this[playerId]) {
+      return false;
+    }
+
+    return (players[playerId].email === email)
       ? bcrypt.compareSync(password, this[playerId].password)
       : false;
   }
