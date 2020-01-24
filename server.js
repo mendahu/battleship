@@ -42,6 +42,13 @@ app.post("/register", (req, res) => {
   res.render("welcome", { user: undefined });
 });
 
+app.post("/login", (req, res) => {
+  const { email, password } = req.body;
+
+
+  res.render("welcome", { user: undefined });
+});
+
 /*******************************
 404 ROUTING
 *******************************/
