@@ -70,6 +70,16 @@ describe("05 - Ship Adder", function() {
     
   });
 
+  it("addShip should not add a ship there is already one of that kind", function() {
+    
+    ships.addShip(testGameId, testIdFitz, "patrol", "b4", "horizontal", "testAlreadyHaveThisShip");
+    
+    console.log(ships);
+
+    assert.equal(ships["testAlreadyHaveThisShip"], undefined);
+    
+  });
+
 });
 
 module.exports = { testGameId, testIdFitz };
