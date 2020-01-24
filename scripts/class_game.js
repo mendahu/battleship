@@ -2,25 +2,28 @@ const { UniqueThing } = require("./unique");
 
 class Game extends UniqueThing {
 
-  constructor(players, options) {
+  constructor(player1, player2, options, uid) {
     super();
-    this.players = players;
+    if (uid) {
+      this.uid = uid;
+    }
+    this.players = [player1, player2];
     this.state = "Not Started";
     this.winner = "No Winner Yet";
     this.options = options;
     this.ships = {
-      [players[0]]: [],
-      [players[1]]: [],
+      [player1.uid]: [],
+      [player2.uid]: [],
     };
     this.boards = {
-      [players[0]]: [],
-      [players[1]]: [],
+      [player1.uid]: [],
+      [player2.uid]: [],
     };
   }
 
   //checks a playerId and returns their opponent playerId given a gameId
   getOpponentId(playerId) {
-    return this.players.filter(player => player !== playerId)[0];
+    return this.players.filter(player => player.uid !== playerId)[0].uid;
   }
 
   startGame() {
@@ -35,8 +38,11 @@ class Game extends UniqueThing {
     return this.options.boardSize;
   }
 
-  associateShip(playerId, shipId) {
+  associateShip(playerId, shipId, occupiedTiles) {
     this.ships[playerId].push(shipId);
+    occupiedTiles.forEach(tile => {
+      this.boards[playerId].push(tile);
+    });
   }
 
   //checks if a coordinate is occupied by a ship on a player's board

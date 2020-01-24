@@ -80,7 +80,6 @@ players.addPlayer("Fitz", "fitz@test.com", "chonker");
 players.addPlayer("Juno", "juno@test.com", "spoon");
 let testIdFitz = _.findKey(players, ["name", "Fitz"]);
 let testIdJuno = _.findKey(players, ["name", "Juno"]);
-let testPlayers = [testIdFitz, "0x00"];
 
 describe("Player Creation", function() {
 
@@ -122,8 +121,10 @@ describe("Player Creation", function() {
 
 //Sets test code up using real functions to simulate actual game experience
 let testOptions = { smartPC: true, shipCount: 5, shotsPerTurn: 1, boardSize: 12 };
-games.addGame(testPlayers, testOptions);
-let testGameId = _.findKey(games, ["players", [testIdFitz, "0x00"]]);
+let testGameId = "test1234test";
+let testPlayer1 = players[testIdFitz];
+let testPlayer2 = players["0x00"];
+games.addGame(testPlayer1, testPlayer2, testOptions, testGameId);
 
 
 describe("Game Creation", function() {
@@ -135,7 +136,7 @@ describe("Game Creation", function() {
   
   it("addGame should generate a new game with the correct players", function() {
     
-    assert.deepEqual(games[testGameId].players, [testIdFitz, "0x00"]);
+    assert.deepEqual(games[testGameId].players, [testPlayer1, testPlayer2]);
   });
   
   it("addGame should generate a new game with the correct computer difficulty", function() {
@@ -156,11 +157,6 @@ describe("Game Creation", function() {
   it("addGame should generate a new game with the correct board size", function() {
     
     assert.equal(games[testGameId].options.boardSize, 12);
-  });
-  
-  it("addGame should generate a new game with no ships added to second player", function() {
-    
-    assert.deepEqual(games[testGameId].ships["0x00"], []);
   });
   
   it("getOpponentId should take one playerID and return their opponent given a game ID", function() {
@@ -212,17 +208,11 @@ describe("Ship Adder", function() {
     
   });
   
-  it("addShip should associate the ship to the correct game", function() {
-    
-    assert.deepEqual(games[testGameId].ships[testIdFitz], [testShipId]);
-    
-  });
-  
   it("addShip should not create a ship if any ship tiles roll off the board", function() {
 
-    ships.addShip(testGameId, testIdFitz, "carrier", "b10", "vertical");
+    ships.addShip(testGameId, testIdFitz, "frigate", "b10", "vertical");
 
-    const testBadShipId = _.findKey(ships, ["class", "carrier"]);
+    const testBadShipId = _.findKey(ships, ["class", "frigate"]);
 
     assert.equal(testBadShipId, undefined);
   });
@@ -241,46 +231,38 @@ describe("Ship Adder", function() {
   
   it("addShip should not create a ship if a coordinate covers another ship", function() {
     
-    ships.addShip(testGameId, testIdFitz, "battleship", "a3", "vertical");
+    ships.addShip(testGameId, testIdFitz, "destroyer", "a3", "vertical");
     const testBadShipId = _.findKey(ships, ["class", "battleship"]);
     
     assert.equal(ships[testBadShipId], undefined);
     
   });
-  /*
-  
-  it("addShip should create a new ship with the correct healthy status", function() {
 
-    assert.isTrue(testShip.status);
-
-  });
-
-*/
 });
 
-/*
+ships.addShip(testGameId, testIdFitz, "cruiser", "g6", "horizontal");
+ships.addShip(testGameId, testIdFitz, "submarine", "d1", "horizontal");
+ships.addShip(testGameId, testIdFitz, "battleship", "b6", "vertical");
+ships.addShip(testGameId, testIdFitz, "carrier", "f7", "horizontal");
+
+ships.addShip(testGameId, "0x00", "patrol", "a10", "horizontal");
+ships.addShip(testGameId, "0x00", "cruiser", "h7", "horizontal", "0x00");
+ships.addShip(testGameId, "0x00", "submarine", "d10", "horizontal");
+ships.addShip(testGameId, "0x00", "battleship", "g2", "vertical");
+ships.addShip(testGameId, "0x00", "carrier", "e1", "vertical");
+
 describe("Add All Ships", function() {
   
   it("addShip should not add a ship if the max ship size has been reached", function() {
     
-    games[testGameId].ships.addShip("cruiser", "g6", "horizontal", testIdFitz);
-    games[testGameId].ships.addShip("submarine", "d1", "horizontal", testIdFitz);
-    games[testGameId].ships.addShip("battleship", "b6", "vertical", testIdFitz);
-    games[testGameId].ships.addShip("carrier", "f7", "horizontal", testIdFitz);
+    ships.addShip("cruiser", "g10", "horizontal", testIdFitz);
     
-    games[testGameId].ships.addShip("patrol", "a10", "horizontal", "0x00");
-    games[testGameId].ships.addShip("cruiser", "h7", "horizontal", "0x00");
-    games[testGameId].ships.addShip("submarine", "d10", "horizontal", "0x00");
-    games[testGameId].ships.addShip("battleship", "g2", "vertical", "0x00");
-    games[testGameId].ships.addShip("carrier", "e1", "vertical", "0x00");
-    
-    games[testGameId].ships.addShip("cruiser", "g10", "horizontal", testIdFitz);
-
     let ships = Object.keys(games[testGameId].ships[testIdFitz]);
-
+    
     assert.equal(ships.length, 5);
-
+    
   });
+  /*
 
 });
 
@@ -316,6 +298,5 @@ describe("Take a Turn", function() {
   });
 
   
+  */
 });
-
-*/
