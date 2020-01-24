@@ -9,15 +9,26 @@ const bcrypt = require('bcrypt');
 const methodOverride = require('method-override');
 const bodyParser = require("body-parser");
 
+/*******************************
+MIDDLEWARE
+*******************************/
+
 app.use(express.static('public'));
+app.use(cookieSession({
+  name: 'session',
+  keys: ["endeavour-atlantis-discovery-columbia-challenger-intrepid-enterprise"],
+}));
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(methodOverride('_method'));
 app.set("view engine", "ejs");
+app.use(express.static('views'));
 
 /*******************************
 GET ROUTING
 *******************************/
 
 app.get("/", (req, res) => {
-  res.render("welcome");
+  res.render("welcome", { user: undefined });
 });
 
 // 404 CATCH
@@ -26,5 +37,5 @@ app.use(function(req, res, next) {
 });
 
 app.listen(PORT, () => {
-  console.log("Battleship Server Running!");
+  console.log("Battleship Server Running!\nBrace for Impact!");
 });
