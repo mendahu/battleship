@@ -3,12 +3,13 @@ const { UniqueThing } = require("./unique");
 //Player class for creating new players
 class Player extends UniqueThing {
 
-  constructor(name, uid) {
+  constructor(name, email, password, uid) {
     super();
     if (uid) {
       this.uid = uid;
     }
     this.name = name;
+    this.email = email;
     this.wins = 0;
   }
 
