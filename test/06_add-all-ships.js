@@ -22,11 +22,9 @@ describe("06 - Add All Ships", function() {
   
   it("addShip should not add a ship if the max ship size has been reached", function() {
     
-    ships.addShip("cruiser", "g10", "horizontal", testIdFitz);
+    ships.addShip(testGameId, testIdFitz, "cruiser", "g10", "horizontal", "testTooManyShipId");
     
-    let ships = Object.keys(games[testGameId].ships[testIdFitz]);
-    
-    assert.equal(ships.length, 5);
+    assert.equal(ships["testTooManyShipId"], undefined);
     
   });
   /*

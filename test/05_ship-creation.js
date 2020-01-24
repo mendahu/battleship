@@ -3,7 +3,7 @@ const assert = chai.assert;
 const _ = require('lodash');
 const { testGameId, testIdFitz } = require('./04_game-creation');
 
-const { ships, games, players } = require('../scripts/data');
+const { ships, games } = require('../scripts/data');
 
 //test code to create a ship
 ships.addShip(testGameId, testIdFitz, "patrol", "a4", "vertical");
@@ -45,11 +45,9 @@ describe("05 - Ship Adder", function() {
   
   it("addShip should not create a ship if any ship tiles roll off the board", function() {
 
-    ships.addShip(testGameId, testIdFitz, "frigate", "b10", "vertical");
+    ships.addShip(testGameId, testIdFitz, "frigate", "b10", "vertical", "testBadShip");
 
-    const testBadShipId = _.findKey(ships, ["class", "frigate"]);
-
-    assert.equal(testBadShipId, undefined);
+    assert.equal(games[testGameId].ships[testIdFitz]["testBadShip"], undefined);
   });
   
   it("games.isOccupied should report true when checking if an occupied tile is occupied", function() {
@@ -66,10 +64,9 @@ describe("05 - Ship Adder", function() {
   
   it("addShip should not create a ship if a coordinate covers another ship", function() {
     
-    ships.addShip(testGameId, testIdFitz, "destroyer", "a3", "vertical");
-    const testBadShipId = _.findKey(ships, ["class", "battleship"]);
-    
-    assert.equal(ships[testBadShipId], undefined);
+    ships.addShip(testGameId, testIdFitz, "destroyer", "a3", "vertical", "testOverlapShipId");
+  
+    assert.equal(ships["testOverlapShipId"], undefined);
     
   });
 

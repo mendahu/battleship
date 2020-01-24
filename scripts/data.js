@@ -28,20 +28,21 @@ let games = {
 let ships = {
   
   //Adds a new ship to the database
-  addShip: function(gameId, playerId, shipClass, coord, direction) {
+  addShip: function(gameId, playerId, shipClass, coord, direction, uid) {
 
-    let boardSize = games[gameId].boardSize;
+    const boardSize = games[gameId].boardSize;
+    const occupiedTiles = getOccupiedTiles(coord, direction, shipLibrary[shipClass]);
 
-    let occupiedTiles = getOccupiedTiles(coord, direction, shipLibrary[shipClass]);
-    let validTiles = areValidTiles(occupiedTiles, boardSize);
-
-    let freeSpace = !games[gameId].areOccupied(playerId, occupiedTiles);
+    //the conditions to allow the addition of a ship
+    const tilesAreOnBoard = areValidTiles(occupiedTiles, boardSize);
+    const tilesAreEmpty = !games[gameId].areOccupied(playerId, occupiedTiles);
+    const maxShipsNotReached = (games[gameId].ships[playerId].length < games[gameId].options.shipCount);
 
     //confirms that the ship position is on the board first
-    if (validTiles && freeSpace) {
+    if (tilesAreOnBoard && tilesAreEmpty && maxShipsNotReached) {
 
       //creates new ship
-      let newShip = new Ship(gameId, playerId, shipClass, coord, direction);
+      let newShip = new Ship(gameId, playerId, shipClass, coord, direction, uid);
       let newShipId = newShip.uid;
       ships[newShipId] = newShip;
       games[gameId].associateShip(playerId, newShipId, occupiedTiles);
