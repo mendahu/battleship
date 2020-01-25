@@ -15,8 +15,12 @@ let shipLibrary = {
 //Ship class for creating new ships
 class Ship extends UniqueThing {
 
-  constructor(gameId, playerId, shipClass, coord, direction) {
+  //uid param is optional allowing you to override the uid instead of generating a random one as per the UniqueThing class
+  constructor(gameId, playerId, shipClass, coord, direction, uid) {
     super();
+    if (uid) {
+      this.uid = uid;
+    }
     this.gameId = gameId;
     this.playerId = playerId;
     this.class = shipClass;
