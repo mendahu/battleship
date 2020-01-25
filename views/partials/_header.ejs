@@ -1,6 +1,6 @@
 <header>
   <nav class="navbar navbar-expand-md bg-dark">
-    <a class="navbar-brand text-light" style="font-family: 'Black Ops One', sans-serif;" href="/welcome">BATTLESHIP</a>
+    <a class="navbar-brand text-light" style="font-family: 'Black Ops One', sans-serif;" href="/">BATTLESHIP</a>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon text-light"></span>
@@ -12,7 +12,7 @@
         <li class="nav-item"><a class="nav-link text-light" href="/leaderboard">Leaderboard</a></li>
       </ul>
       <% if (user) { %>
-      <span class="mr-4">Welcome, <%= user.email %>!</span>
+      <span class="mr-4">Welcome, <%= user.name %>!</span>
       <form class="form-inline" action="/logout" method="POST">
       <% } %>
       <% if (!user) { %>

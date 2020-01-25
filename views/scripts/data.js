@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt");
 const { getOccupiedTiles, areValidTiles } = require('./helpers');
 const { Player } = require('./players');
 const { Game } = require('./games');
@@ -7,11 +8,32 @@ const { Ship, shipLibrary } = require('./ships');
 //players.addPlayer is a method to create a new player
 let players = {
 
-  addPlayer: function(name, uid) {
-    let newPlayer = new Player(name, uid);
-    let newPlayerUid = newPlayer.uid;
+  addPlayer: function(name, email, password, uid) {
+    const newPlayer = new Player(name, email, password, uid);
+    const newPlayerUid = newPlayer.uid;
     players[newPlayerUid] = newPlayer;
+    return newPlayerUid;
+  },
+
+  getPlayerIdByEmail: (email) => {
+    for (const player in players) {
+      if (player.email === email) {
+        return player.uid;
+      }
+    }
+    return false;
+  },
+
+  doesAuthenticate: (email, password, playerId) => {
+    if (!this[playerId]) {
+      return false;
+    }
+
+    return (players[playerId].email === email)
+      ? bcrypt.compareSync(password, this[playerId].password)
+      : false;
   }
+
 };
 
 let games = {
