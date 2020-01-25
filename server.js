@@ -9,7 +9,6 @@ const bcrypt = require('bcrypt');
 const methodOverride = require('method-override');
 const bodyParser = require("body-parser");
 
-<<<<<<< HEAD
 /*******************************
 MIDDLEWARE
 *******************************/
@@ -27,8 +26,6 @@ app.use(express.static('views'));
 /*******************************
 GET ROUTING
 *******************************/
-=======
->>>>>>> feature/data-structures-setup
 
 app.get("/", (req, res) => {
   res.render("welcome", { user: undefined });
@@ -56,14 +53,6 @@ app.post("/login", (req, res) => {
 404 ROUTING
 *******************************/
 
-<<<<<<< HEAD
-app.use(function(req, res, next) {
-  res.status(404).send("Path or File not found.");
-});
-
-app.listen(PORT, () => {
-  console.log("Battleship Server Running!\nBrace for Impact!");
-=======
 // 404 Catch
 app.get(function(req, res) {
   let errorCode = 404;
@@ -71,7 +60,6 @@ app.get(function(req, res) {
   res.render("error", { errorCode });
 });
 
-app.listen(port, () => {
+app.listen(PORT, () => {
   console.log("Battleship Server Running!");
->>>>>>> feature/data-structures-setup
 });
