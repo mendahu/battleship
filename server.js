@@ -28,8 +28,31 @@ app.use(express.static('views'));
 GET ROUTING
 *******************************/
 
+app.get("/player/:playerId", (req, res) => {
+  let playerId = req.session.player_id; //gets userId from login cookie
+  let urlPlayerId = req.params.playerId;
+
+  //IF the user is not logged in
+  if (!(playerId === urlPlayerId)) {
+    console.log("cred check fail", playerId, urlPlayerId);
+    const errorCode = 403;
+    const errorMsg = "You must be logged in to access this player profile.";
+    res.status(errorCode);
+    return res.render("error", { user: undefined, errorMsg, errorCode });
+  }
+  
+  res.render("player", { user: players[playerId] });
+});
+
 app.get("/", (req, res) => {
-  res.render("welcome", { user: undefined });
+  let playerId = req.session.player_id; //gets userId from login cookie
+
+  //IF the user is not logged in
+  if (!playerId) {
+    return res.render("welcome", { user: undefined });
+  }
+    
+  res.redirect(302, `/player/${playerId}`);
 });
 
 /*******************************
@@ -59,19 +82,17 @@ app.post("/register", (req, res) => {
   const hashedPassword = bcrypt.hashSync(password, 10);
 
   const newPlayerId = players.addPlayer(name, email, hashedPassword);
-  req.session["user_id"] = newPlayerId;
+  req.session["player_id"] = newPlayerId;
 
-  res.render("newgame", { user: players[newPlayerId] });
+  res.redirect(302, `/player/${newPlayerId}`);
 });
 
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
   const playerId = players.getPlayerIdByEmail(email);
-  console.log(email, password, playerId);
 
   //checks if email or password were empty
   if (!(email || password)) {
-    console.log("hit an empty email or pass");
     const errorCode = 400;
     const errorMsg = "Login requires an email and password to authenticate!";
     res.status(errorCode);
@@ -80,15 +101,20 @@ app.post("/login", (req, res) => {
   
   //validate crentials
   if (!players.doesAuthenticate(email, password, playerId)) {
-    console.log("does not authenticate");
-    console.log(players.doesAuthenticate(email, password, playerId));
     const errorCode = 403;
     const errorMsg = "Invalid login credentials!";
     res.status(errorCode);
     return res.render("error", { user: undefined, errorMsg, errorCode });
   }
 
-  res.render("newgame", { user: players[playerId] });
+  req.session["player_id"] = playerId;
+  res.redirect(302, `/player/${playerId}`);
+});
+
+//Accepts POST requests to log user out by deleting their cookie
+app.post("/logout", (req, res) => {
+  req.session = null;
+  res.redirect(302, `/`);
 });
 
 /*******************************

@@ -15,20 +15,7 @@
 
   <main>
     <div class="container">
-      <div class="col-lg-5 mx-auto my-5">
-        <h1 style="font-family: 'Black Ops One', sans-serif; text-align: center;">ERROR <%= errorCode %> </h1>
-      </div>
-      <div class="row justify-content-md-center">
-        <div class="card col-lg-5 m-2">
-          <div class="card-body">
-            <h5 class="card-title">Our ship has run aground!</h5>
-            <p class="card-text"><%= errorMsg %></p>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-5 mx-auto my-5" style="text-align: center;">
-        <a class="btn-lg btn-primary mx-auto" href="/">Login or Register</a>
-      </div>
+      <% user %>
     </div>
   </main>
 

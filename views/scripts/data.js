@@ -17,20 +17,22 @@ let players = {
 
   getPlayerIdByEmail: (email) => {
     for (const player in players) {
-      if (player.email === email) {
-        return player.uid;
+      if (players[player].email === email) {
+        return players[player].uid;
       }
     }
     return false;
   },
 
   doesAuthenticate: (email, password, playerId) => {
-    if (!this[playerId]) {
+    const thisPlayer = players[playerId];
+    
+    if (!thisPlayer) {
       return false;
     }
 
-    return (players[playerId].email === email)
-      ? bcrypt.compareSync(password, this[playerId].password)
+    return (thisPlayer.email === email)
+      ? bcrypt.compareSync(password, thisPlayer.password)
       : false;
   }
 
