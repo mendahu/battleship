@@ -26,7 +26,7 @@ class Game extends UniqueThing {
       [players[1].uid]: [],
     };
   }
-
+ 
   //checks a playerId and returns their opponent playerId given a gameId
   getOpponentId(playerId) {
     return this.players.filter(player => player.uid !== playerId)[0].uid;
@@ -73,7 +73,7 @@ class Game extends UniqueThing {
   }
 
   isAPlayer(playerId) {
-    if (this.players[0] === playerId || this.players[1] === playerId) {
+    if (this.players[0].uid === playerId || this.players[1].uid === playerId) {
       return true;
     }
     return false;

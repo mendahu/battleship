@@ -37,6 +37,10 @@ let players = {
   }
 };
 
+//Creates computer player
+const hashedPassword = bcrypt.hashSync("computer", 10);
+players.addPlayer("Computer", "computer@computer.com", hashedPassword, "0x00");
+
 let games = {
   addGame: function(players, options, uid) {
     let newGame = new Game(players, options, uid);
@@ -59,7 +63,6 @@ let games = {
     });
     return false;
   }
-  
 };
   
 let ships = {

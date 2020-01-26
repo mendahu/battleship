@@ -8,7 +8,7 @@ const cookieSession = require('cookie-session');
 const bcrypt = require('bcrypt');
 const methodOverride = require('method-override');
 const bodyParser = require("body-parser");
-const { games, players, ships } = require("./views/scripts/data");
+const { games, players, ships } = require("./scripts/data");
 
 /*******************************
 MIDDLEWARE
@@ -75,9 +75,11 @@ app.get("/games/:gameId", (req, res) => {
     return res.render("error", { user: undefined, errorMsg, errorCode });
   }
 
+  console.log(games[gameId].state);
+
   //check game status
   switch (games[gameId].state) {
-  case "Not Started Yet":
+  case "Not Started":
     res.render("placement", { user: players[playerId], game: games[gameId] });
     break;
   case "In Progress":
@@ -180,7 +182,6 @@ app.post("/logout", (req, res) => {
 //Accepts POST requests to start a new game
 app.post("/games", (req, res) => {
   const playerId = req.session.player_id; //gets userId from login cookie
-  console.log(playerId);
   
   //IF the user is not logged in
   if (!playerId) {
@@ -191,7 +192,6 @@ app.post("/games", (req, res) => {
   }
   
   const { boardSize, shipCount, shotsPerTurn, smartPC } = req.body;
-  console.log(boardSize, shipCount, shotsPerTurn, smartPC);
 
   //If form was not submitted completely
   if (!(boardSize || shipCount || shotsPerTurn || smartPC)) {
