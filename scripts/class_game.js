@@ -2,22 +2,28 @@ const { UniqueThing } = require("./unique");
 
 class Game extends UniqueThing {
 
-  constructor(player1, player2, options, uid) {
+  //players should be an array with two objects in it, references to the player objects
+  //options should be an object with four key value pairs
+  // boardSize: 10, 11, or 12
+  // shotsPerTurn: 1 or 2
+  // shipCount: 5, 6 or 7
+  // smartPC: true or false
+  constructor(players, options, uid) {
     super();
     if (uid) {
       this.uid = uid;
     }
-    this.players = [player1, player2];
+    this.players = players;
     this.state = "Not Started";
     this.winner = "No Winner Yet";
     this.options = options;
     this.ships = {
-      [player1.uid]: [],
-      [player2.uid]: [],
+      [players[0].uid]: [],
+      [players[1].uid]: [],
     };
     this.boards = {
-      [player1.uid]: [],
-      [player2.uid]: [],
+      [players[0].uid]: [],
+      [players[1].uid]: [],
     };
   }
 
@@ -62,6 +68,13 @@ class Game extends UniqueThing {
       if (this.isOccupied(playerId, coord)) {
         return true;
       }
+    }
+    return false;
+  }
+
+  isAPlayer(playerId) {
+    if (this.players[0] === playerId || this.players[1] === playerId) {
+      return true;
     }
     return false;
   }

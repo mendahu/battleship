@@ -21,5 +21,4 @@ class Player extends UniqueThing {
 }
 
 
-
 module.exports = { Player };

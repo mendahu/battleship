@@ -28,13 +28,21 @@ app.use(express.static('views'));
 GET ROUTING
 *******************************/
 
+//For accessing a player profile
 app.get("/player/:playerId", (req, res) => {
-  let playerId = req.session.player_id; //gets userId from login cookie
-  let urlPlayerId = req.params.playerId;
+  const playerId = req.session.player_id; //gets userId from login cookie
+  const urlPlayerId = req.params.playerId;
+  
+  //If user is not logged in
+  if (!playerId) {
+    const errorCode = 403;
+    const errorMsg = "You must be logged in to access a player profile.";
+    res.status(errorCode);
+    return res.render("error", { user: undefined, errorMsg, errorCode });
+  }
 
-  //IF the user is not logged in
+  //If logged in user does not match
   if (!(playerId === urlPlayerId)) {
-    console.log("cred check fail", playerId, urlPlayerId);
     const errorCode = 403;
     const errorMsg = "You must be logged in to access this player profile.";
     res.status(errorCode);
@@ -44,8 +52,60 @@ app.get("/player/:playerId", (req, res) => {
   res.render("player", { user: players[playerId] });
 });
 
+//For accessing a game
+app.get("/games/:gameId", (req, res) => {
+  const playerId = req.session.player_id; //gets userId from login cookie
+  const gameId = req.session.game_id; //gets userId from login cookie
+  
+  console.log(players[playerId], games[gameId]);
+
+  //IF the user is not logged in
+  if (!playerId) {
+    const errorCode = 403;
+    const errorMsg = "You must be logged in to play a game.";
+    res.status(errorCode);
+    return res.render("error", { user: undefined, errorMsg, errorCode });
+  }
+
+  //If the player is a member of the game
+  if (!games[gameId].isAPlayer(playerId)) {
+    const errorCode = 403;
+    const errorMsg = "You are not a member of this game.";
+    res.status(errorCode);
+    return res.render("error", { user: undefined, errorMsg, errorCode });
+  }
+
+  //check game status
+  switch (games[gameId].state) {
+  case "Not Started Yet":
+    res.render("placement", { user: players[playerId], game: games[gameId] });
+    break;
+  case "In Progress":
+    res.render("play", { user: players[playerId], game: games[gameId] });
+    break;
+  case "Completed":
+    res.render("results", { user: players[playerId], game: games[gameId] });
+    break;
+  }
+
+});
+
+app.get("/games", (req, res) => {
+  const playerId = req.session.player_id; //gets userId from login cookie
+
+  //IF the user is not logged in
+  if (!playerId) {
+    const errorCode = 403;
+    const errorMsg = "You must be logged in to start a new game.";
+    res.status(errorCode);
+    return res.render("error", { user: undefined, errorMsg, errorCode });
+  }
+  
+  res.render("games", { user: players[playerId] });
+});
+
 app.get("/", (req, res) => {
-  let playerId = req.session.player_id; //gets userId from login cookie
+  const playerId = req.session.player_id; //gets userId from login cookie
 
   //IF the user is not logged in
   if (!playerId) {
@@ -117,13 +177,43 @@ app.post("/logout", (req, res) => {
   res.redirect(302, `/`);
 });
 
+//Accepts POST requests to start a new game
+app.post("/games", (req, res) => {
+  const playerId = req.session.player_id; //gets userId from login cookie
+  console.log(playerId);
+  
+  //IF the user is not logged in
+  if (!playerId) {
+    const errorCode = 403;
+    const errorMsg = "You must be logged in to start a new game.";
+    res.status(errorCode);
+    return res.render("error", { user: undefined, errorMsg, errorCode });
+  }
+  
+  const { boardSize, shipCount, shotsPerTurn, smartPC } = req.body;
+  console.log(boardSize, shipCount, shotsPerTurn, smartPC);
+
+  //If form was not submitted completely
+  if (!(boardSize || shipCount || shotsPerTurn || smartPC)) {
+    const errorCode = 400;
+    const errorMsg = "To start a new game you must complete the new game form.";
+    res.status(errorCode);
+    return res.render("error", { user: players[playerId], errorMsg, errorCode });
+  }
+
+  const gameId = games.addGame([players[playerId], players["0x00"]], { boardSize, shipCount, shotsPerTurn, smartPC });
+
+  req.session["game_id"] = gameId;
+  res.redirect(302, `/games/${gameId}`);
+});
+
 /*******************************
 404 ROUTING
 *******************************/
 
 // 404 Catch
 app.get(function(req, res) {
-  let errorCode = 404;
+  const errorCode = 404;
   res.status(404);
   res.render("error", { errorCode });
 });

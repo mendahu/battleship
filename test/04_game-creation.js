@@ -8,7 +8,7 @@ let testOptions = { smartPC: true, shipCount: 5, shotsPerTurn: 1, boardSize: 12 
 let testGameId = "test1234test";
 let testPlayer1 = players[testIdFitz];
 let testPlayer2 = players["0x00"];
-games.addGame(testPlayer1, testPlayer2, testOptions, testGameId);
+games.addGame([testPlayer1, testPlayer2], testOptions, testGameId);
 
 describe("04 - Game Creation", function() {
   

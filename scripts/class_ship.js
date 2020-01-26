@@ -27,7 +27,7 @@ class Ship extends UniqueThing {
     this.coordinate = coord;
     this.direction = direction;
   }
-
+ 
   get size() {
     return shipLibrary[this.class];
   }

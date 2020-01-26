@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt");
 const { getOccupiedTiles, areValidTiles } = require('./helpers');
 const { Player } = require('./class_player');
 const { Game } = require('./class_game');
@@ -8,20 +9,56 @@ const { Ship, shipLibrary } = require('./class_ship');
 let players = {
 
   addPlayer: function(name, email, password, uid) {
-    let newPlayer = new Player(name, email, password, uid);
-    let newPlayerUid = newPlayer.uid;
+    const newPlayer = new Player(name, email, password, uid);
+    const newPlayerUid = newPlayer.uid;
     players[newPlayerUid] = newPlayer;
+    return newPlayerUid;
+  },
+
+  getPlayerIdByEmail: (email) => {
+    for (const player in players) {
+      if (players[player].email === email) {
+        return players[player].uid;
+      }
+    }
+    return false;
+  },
+
+  doesAuthenticate: (email, password, playerId) => {
+    const thisPlayer = players[playerId];
+    
+    if (!thisPlayer) {
+      return false;
+    }
+
+    return (thisPlayer.email === email)
+      ? bcrypt.compareSync(password, thisPlayer.password)
+      : false;
   }
 };
 
 let games = {
-  addGame: function(player1, player2, options, uid) {
-    let newGame = new Game(player1, player2, options, uid);
+  addGame: function(players, options, uid) {
+    let newGame = new Game(players, options, uid);
     let newGameUid = newGame.uid;
     games[newGameUid] = newGame;
-    player1.associateGame(newGameUid);
-    player2.associateGame(newGameUid);
+    players[0].associateGame(newGameUid);
+    players[1].associateGame(newGameUid);
+    return newGameUid;
   },
+
+  isOccupied: function(playerId, coord) {
+
+    this.ships[playerId].forEach(ship => {
+      console.log(this.ships);
+      ship.tiles.forEach(tile => {
+        if (tile === coord) {
+          return true;
+        }
+      });
+    });
+    return false;
+  }
   
 };
   

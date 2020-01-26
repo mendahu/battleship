@@ -19,12 +19,41 @@
             <div class="card col-lg-5 m-2">
               <div class="card-body">
                 <h5 class="card-title" style="font-family: 'Black Ops One', sans-serif; text-align: center;">GAME OPTIONS</h5>
-                <form>
-                  
+                <form action="/games" method="POST">
+                  <div class="form-group">
+                    <label for="boardSize">Board Size</label>
+                    <select class="form-control" name="boardSize">
+                      <option>10</option>
+                      <option>11</option>
+                      <option>12</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="shipCount">Ships per Player</label>
+                    <select class="form-control" name="shipCount">
+                      <option>5</option>
+                      <option>6</option>
+                      <option>7</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="shotPerTurn">Shots per Turn</label>
+                    <select class="form-control" name="shotsPerTurn">
+                        <option>1</option>
+                        <option>2</option>
+                      </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="smartPC">Computer Difficulty</label>
+                    <select class="form-control" name="smartPC">
+                        <option value="false">Dumb</option>
+                        <option value="true">Smart</option>
+                      </select>
+                  </div>
+                  <div class="col-lg-5 mx-auto my-5" style="text-align: center;">
+                      <button type="submit" class="btn btn-primary">Place Ships</button>
+                  </div>
                 </form>
-              </div>
-              <div class="col-lg-5 mx-auto my-5" style="text-align: center;">
-                <a class="btn-lg btn-primary mx-auto" href="placement">Place Ships</a>
               </div>
             </div>
         </div>
