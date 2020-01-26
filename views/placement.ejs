@@ -19,11 +19,11 @@
             <div class="mt-3">
               <p class="my-3">Select a ship, toggle it's orientation and click a tile on the board to place it. When you are satisfied, click <span style="font-family: 'Black Ops One', sans-serif;">START GAME</span>.</p>
             </div>
-            <div class="card col-lg-4 m-2">
+            <div class="card col-lg-5 m-2">
               <div class="card-body">
                 <h5 class="card-title" style="font-family: 'Black Ops One', sans-serif; text-align: center;">SHIPS</h5>
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-5">
                       <div class="list-group" id="list-tab" role="tablist">
                         <a class="list-group-item list-group-item-action active" id="list-carrier-list" data-toggle="list" href="#list-carrier" role="tab" aria-controls="carrier">Carrier</a>
                         <a class="list-group-item list-group-item-action" id="list-battleship-list" data-toggle="list" href="#list-battleship" role="tab" aria-controls="battleship">Battleship</a>
@@ -40,17 +40,94 @@
                     </div>
                     <div class="col-6">
                       <div class="tab-content" id="nav-tabContent">
-                        <div class="tab-pane fade show active" id="list-carrier" role="tabpanel" aria-labelledby="list-carrier-list"><p>The aircraft carrier, flagship of the fleet.</p><p>Length: 5 Tiles</p></div>
-                        <div class="tab-pane fade" id="list-battleship" role="tabpanel" aria-labelledby="list-battleship-list"><p>The battleship, a heavy warship.</p><p>Length: 4 Tiles</p></div>
+                        <div class="tab-pane fade show active" id="list-carrier" role="tabpanel" aria-labelledby="list-carrier-list">
+                          <p>The aircraft carrier, flagship of the fleet.</p>
+                          <p>Length: 5 Tiles</p>
+                          <div class="btn-group btn-group-toggle active" data-toggle="buttons">
+                            <label class="btn btn-outline-primary">
+                              <input type="radio" name="carrier-orientation" value="horizontal" checked> Horizontal
+                            </label>
+                            <label class="btn btn-outline-primary">
+                              <input type="radio" name="carrier-orientation" value="vertical"> Vertical
+                            </label>
+                          </div>
+                        </div>
+                        <div class="tab-pane fade" id="list-battleship" role="tabpanel" aria-labelledby="list-battleship-list">
+                          <p>The battleship, a heavy warship.</p>
+                          <p>Length: 4 Tiles</p>
+                          <div class="btn-group btn-group-toggle active" data-toggle="buttons">
+                              <label class="btn btn-outline-primary">
+                                <input type="radio" name="battleship-orientation" value="horizontal" checked> Horizontal
+                              </label>
+                              <label class="btn btn-outline-primary">
+                                <input type="radio" name="battleship-orientation" value="vertical"> Vertical
+                              </label>
+                            </div>
+                        </div>
                         <% if (game.options.shipCount > 5) { %>
-                        <div class="tab-pane fade" id="list-destroyer" role="tabpanel" aria-labelledby="list-destroyer-list"><p>The destroyer, a fast and powerful ship.</p><p>Length: 4 Tiles</p></div>
+                        <div class="tab-pane fade" id="list-destroyer" role="tabpanel" aria-labelledby="list-destroyer-list">
+                          <p>The destroyer, a fast and powerful ship.</p>
+                          <p>Length: 4 Tiles</p>
+                          <div class="btn-group btn-group-toggle active" data-toggle="buttons">
+                              <label class="btn btn-outline-primary">
+                                <input type="radio" name="destroyer-orientation" value="horizontal" checked> Horizontal
+                              </label>
+                              <label class="btn btn-outline-primary">
+                                <input type="radio" name="destroyer-orientation" value="vertical"> Vertical
+                              </label>
+                            </div>
+                        </div>
                         <% } %>
-                        <div class="tab-pane fade" id="list-submarine" role="tabpanel" aria-labelledby="list-submarine-list"><p>The submarine, a stealthy adversary.</p><p>Length: 3 Tiles</p></div>
-                        <div class="tab-pane fade" id="list-cruiser" role="tabpanel" aria-labelledby="list-cruiser-list"><p>The cruiser, a nimble defender.</p><p>Length: 3 Tiles</p></div>
+                        <div class="tab-pane fade" id="list-submarine" role="tabpanel" aria-labelledby="list-submarine-list">
+                          <p>The submarine, a stealthy adversary.</p>
+                          <p>Length: 3 Tiles</p>
+                          <div class="btn-group btn-group-toggle active" data-toggle="buttons">
+                              <label class="btn btn-outline-primary">
+                                <input type="radio" name="submarine-orientation" value="horizontal" checked> Horizontal
+                              </label>
+                              <label class="btn btn-outline-primary">
+                                <input type="radio" name="submarine-orientation" value="vertical"> Vertical
+                              </label>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="list-cruiser" role="tabpanel" aria-labelledby="list-cruiser-list">
+                          <p>The cruiser, a nimble defender.</p>
+                          <p>Length: 3 Tiles</p>
+                          <div class="btn-group btn-group-toggle active" data-toggle="buttons">
+                              <label class="btn btn-outline-primary">
+                                <input type="radio" name="cruiser-orientation" value="horizontal" checked> Horizontal
+                              </label>
+                              <label class="btn btn-outline-primary">
+                                <input type="radio" name="cruiser-orientation" value="vertical"> Vertical
+                              </label>
+                            </div>
+                        </div>
                         <% if (game.options.shipCount > 6) { %>
-                        <div class="tab-pane fade" id="list-frigate" role="tabpanel" aria-labelledby="list-frigate-list"><p>The frigate, a small warship.</p><p>Length: 3 Tiles</p></div>
+                        <div class="tab-pane fade" id="list-frigate" role="tabpanel" aria-labelledby="list-frigate-list">
+                          <p>The frigate, a small warship.</p>
+                          <p>Length: 3 Tiles</p>
+                          <div class="btn-group btn-group-toggle active" data-toggle="buttons">
+                              <label class="btn btn-outline-primary">
+                                <input type="radio" name="frigate-orientation" value="horizontal" checked> Horizontal
+                              </label>
+                              <label class="btn btn-outline-primary">
+                                <input type="radio" name="frigate-orientation" value="vertical"> Vertical
+                              </label>
+                            </div>
+                        </div>
                         <% } %>
-                        <div class="tab-pane fade" id="list-patrol" role="tabpanel" aria-labelledby="list-patrol-list"><p>The patrol boat, a small tender ship.</p><p>Length: 2 Tiles</p></div>
+                        <div class="tab-pane fade" id="list-patrol" role="tabpanel" aria-labelledby="list-patrol-list">
+                          <p>The patrol boat, a small tender ship.</p>
+                          <p>Length: 2 Tiles</p>
+                          <div class="btn-group btn-group-toggle active" data-toggle="buttons">
+                              <label class="btn btn-outline-primary">
+                                <input type="radio" name="patrol-orientation" value="horizontal" checked> Horizontal
+                              </label>
+                              <label class="btn btn-outline-primary">
+                                <input type="radio" name="patrol-orientation" value="vertical"> Vertical
+                              </label>
+                            </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -69,5 +146,6 @@
    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> 
+   <script src="../scripts/placement.js"></script> 
 </body>
 </html>
