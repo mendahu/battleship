@@ -15,7 +15,34 @@
 
   <main>
     <div class="container">
-      <% user %>
+      <div class="row justify-content-md-center">
+        <div class="card col-lg-5 m-2">
+          <div class="card-body">
+            <h5 class="card-title" style="font-family: 'Black Ops One', sans-serif; text-align: center;">PLAYER STATS</h5>
+            <table class="table">
+              <tbody>
+                <tr>
+                  <td>Games Played</td>
+                  <td><%= user.games.length %></td>
+                </tr>
+                <tr>
+                  <td>Games Won</td>
+                  <td><%= user.wins %> (<%= user.wins / user.games.length %>)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-lg-12 mx-auto my-5" style="text-align: center;">
+            <a class="btn-lg btn-primary mx-auto" href="newgame">Start New Game</a>
+          </div>
+        </div>
+        <div class="card col-lg-5 m-2">
+          <div class="card-body">
+            <h5 class="card-title" style="font-family: 'Black Ops One', sans-serif; text-align: center;">LEADERBOARD</h5>
+            <p class="card-text">For the Leaderboard</p>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
 
