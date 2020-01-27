@@ -1,11 +1,12 @@
 <div class="battleship-board container-fluid" style="grid-template-rows: repeat(<%= Number(game.boardSize) + 1 %>, 1fr [row-start]); grid-template-columns:repeat(<%= Number(game.boardSize) + 1 %>, 1fr [col-start]);">
   <% for (let i = 0; i < game.options.boardSize; i++) { %>
-    <div class="board-label board-row-label" id="board-row-label-<%= i %>" style="grid-row-start: row-start <%= i + 1 %>; grid-row-end: row-start <%= i + 2 %>; grid-column-start: col-start 0; grid-column-end: col-start 1;"><%= i + 1 %></div>
-    <div class="board-label board-col-label" id="board-col-label-<%= i %>" style="grid-row-start: row-start 0; grid-row-end: row-start 1; grid-column-start: col-start <%= i + 1 %>; grid-column-end: col-start <%= i + 2 %>;"><%= String.fromCharCode(65 + i) %></div>
+    <div class="board-label board-row-label" id="board-row-label-<%= i %>" style="grid-area: <%= i + 2 %> / 1 / span 1 / span 1;"><%= i + 1 %></div> 
+    <div class="board-label board-col-label" id="board-col-label-<%= i %>" style="grid-area: 1 / <%= i + 2 %> / span 1 / span 1;"><%= String.fromCharCode(65 + i) %></div> 
   <% } %>
   <% for (let i = 1; i <= game.options.boardSize; i++) { %>
   <% for (let j = 1; j <= game.options.boardSize; j++) { %>
-    <div class="board-tile" id="board-tile-<%= String.fromCharCode(96 + j) + i %>" style="grid-row-start: row-start <%= i %>; grid-row-end: row-start <%= i + 1 %>; grid-col-start: col-start <%= j %>; grid-col-end: col-start <%= j + 1 %>;"></div>
+    <div class="board-tile" id="board-tile-<%= String.fromCharCode(96 + j) + i %>" style="grid-area: <%= i + 1 %> / <%= j + 1 %> / span 1 / span 1;"></div>
   <% } %>
   <% } %>
+  <img src="../assets/carrier.svg" style="grid-area: 3 / 3 / span 1 / span 5; z-index: 2;">
 </div>
