@@ -35,7 +35,7 @@ const drawShip = function(coordinate) {
 
 
   (orientation === "horizontal")
-    ? $("#board-placement").append(`<img src="../assets/${ship}.svg" alt="${ship} image" id="draw-${ship}" style="grid-area: ${row} / ${col} / span 1 / span ${size}; z-index: 2;"`)
-    : $("#board-placement").append(`<img src="../assets/${ship}.svg" alt="${ship} image" id="draw-${ship}" style="grid-area: ${row} / ${col} / span ${size} / span 1; z-index: 2;"`);
+    ? $("#board-placement").append(`<img src="../assets/${ship}.svg" alt="${ship} image" id="draw-${ship}" style="grid-area: ${row} / ${col} / span 1 / span ${size}; z-index: 2;">`)
+    : $("#board-placement").append(`<img src="../assets/${ship}.svg" alt="${ship} image" id="draw-${ship}" style="grid-area: ${row} / ${col} / span ${size} / span 1; z-index: 2;">`);
   
 };
