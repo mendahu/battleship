@@ -1,4 +1,4 @@
-<div class="battleship-board container-fluid" style="grid-template-rows: repeat(<%= Number(game.boardSize) + 1 %>, 1fr [row-start]); grid-template-columns:repeat(<%= Number(game.boardSize) + 1 %>, 1fr [col-start]);">
+<div id="board-placement" class="battleship-board container-fluid" style="grid-template-rows: repeat(<%= Number(game.boardSize) + 1 %>, 1fr [row-start]); grid-template-columns:repeat(<%= Number(game.boardSize) + 1 %>, 1fr [col-start]);">
   <% for (let i = 0; i < game.options.boardSize; i++) { %>
     <div class="board-label board-row-label" id="board-row-label-<%= i %>" style="grid-area: <%= i + 2 %> / 1 / span 1 / span 1;"><%= i + 1 %></div> 
     <div class="board-label board-col-label" id="board-col-label-<%= i %>" style="grid-area: 1 / <%= i + 2 %> / span 1 / span 1;"><%= String.fromCharCode(65 + i) %></div> 
@@ -8,5 +8,5 @@
     <div class="board-tile" id="board-tile-<%= String.fromCharCode(96 + j) + i %>" style="grid-area: <%= i + 1 %> / <%= j + 1 %> / span 1 / span 1;"></div>
   <% } %>
   <% } %>
-  <img src="../assets/carrier.svg" style="grid-area: 3 / 3 / span 1 / span 5; z-index: 2;">
+  <img src="../assets/carrier.svg" alt="carrier image" id="draw-carrier" style="grid-area: 3 / 3 / span 1 / span 5; z-index: 2"
 </div>

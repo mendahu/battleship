@@ -25,18 +25,18 @@
                 <h5 class="card-title" style="font-family: 'Black Ops One', sans-serif; text-align: center;">SHIPS</h5>
                 <div class="row">
                     <div class="col-5">
-                      <div class="list-group" id="list-tab" role="tablist">
-                        <a class="list-group-item list-group-item-action active" id="list-carrier-list" data-toggle="list" href="#list-carrier" role="tab" aria-controls="carrier">Carrier</a>
-                        <a class="list-group-item list-group-item-action" id="list-battleship-list" data-toggle="list" href="#list-battleship" role="tab" aria-controls="battleship">Battleship</a>
+                      <div class="list-group" id="ship-list" role="tablist">
+                        <a class="list-group-item list-group-item-action active" id="list-carrier-list" data-toggle="list" href="#list-carrier" role="tab" aria-controls="carrier" value="carrier" data-size="5">Carrier</a>
+                        <a class="list-group-item list-group-item-action" id="list-battleship-list" data-toggle="list" href="#list-battleship" role="tab" aria-controls="battleship" value="battleship" data-size="4">Battleship</a>
                         <% if (game.options.shipCount > 5) { %>
-                          <a class="list-group-item list-group-item-action" id="list-destroyer-list" data-toggle="list" href="#list-destroyer" role="tab" aria-controls="settings">Destroyer</a>
+                          <a class="list-group-item list-group-item-action" id="list-destroyer-list" data-toggle="list" href="#list-destroyer" role="tab" aria-controls="destroyer" value="destroyer" data-size="4">Destroyer</a>
                         <% } %>
-                        <a class="list-group-item list-group-item-action" id="list-submarine-list" data-toggle="list" href="#list-submarine" role="tab" aria-controls="submarine">Submarine</a>
-                        <a class="list-group-item list-group-item-action" id="list-cruiser-list" data-toggle="list" href="#list-cruiser" role="tab" aria-controls="settings">Cruiser</a>
+                        <a class="list-group-item list-group-item-action" id="list-submarine-list" data-toggle="list" href="#list-submarine" role="tab" aria-controls="submarine" value="submarine" data-size="3">Submarine</a>
+                        <a class="list-group-item list-group-item-action" id="list-cruiser-list" data-toggle="list" href="#list-cruiser" role="tab" aria-controls="cruiser" value="cruiser" data-size="3">Cruiser</a>
                         <% if (game.options.shipCount > 6) { %>
-                          <a class="list-group-item list-group-item-action" id="list-frigate-list" data-toggle="list" href="#list-frigate" role="tab" aria-controls="settings">Frigate</a>
+                          <a class="list-group-item list-group-item-action" id="list-frigate-list" data-toggle="list" href="#list-frigate" role="tab" aria-controls="frigate" value="frigate" data-size="3">Frigate</a>
                         <% } %>
-                        <a class="list-group-item list-group-item-action" id="list-patrol-list" data-toggle="list" href="#list-patrol" role="tab" aria-controls="settings">Patrol Boat</a>
+                        <a class="list-group-item list-group-item-action" id="list-patrol-list" data-toggle="list" href="#list-patrol" role="tab" aria-controls="patrol" value="patrol" data-size="2">Patrol Boat</a>
                       </div>
                     </div>
                     <div class="col-6">
