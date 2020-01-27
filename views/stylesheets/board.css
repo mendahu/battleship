@@ -1,0 +1,13 @@
+.battleship-board {
+  display: grid;
+}
+
+.board-label, .board-tile {
+  text-align: center;
+  height: 100%;
+}
+
+.board-tile {
+  border: 1px solid;
+  background-color: rgb(139, 247, 247);
+}
