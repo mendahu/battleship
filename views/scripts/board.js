@@ -7,6 +7,8 @@ $(document).ready(function() {
   });
 });
 
+occupiedTiles = [];
+
 const getShip = function() {
   const shipElement = $(".list-group-item.active");
   return [shipElement.attr("value"), shipElement.attr("data-size")];
@@ -23,7 +25,7 @@ const drawShip = function(coordinate) {
   const ship = shipData[0];
   const size = shipData[1];
   const orientation = getOrientation(ship);
-  const row = Number(coordinate[1]) + 1;
+  const row = Number(coordinate.slice(1)) + 1;
   const col = coordinate.charCodeAt(0) - 95;
 
   const existingShip = $(`#draw-${ship}`);
@@ -32,10 +34,17 @@ const drawShip = function(coordinate) {
     existingShip.remove();
   }
 
+  const boardSize = $("#board-placement").attr("data-board-size");
+  const occupiedTiles = getOccupiedTiles(coordinate, orientation, size);
 
+  //the conditions to allow the addition of a ship
+  const tilesAreOnBoard = areValidTiles(occupiedTiles, boardSize);
+  //const tilesAreEmpty = !games[gameId].areOccupied(playerId, occupiedTiles);
 
-  (orientation === "horizontal")
-    ? $("#board-placement").append(`<img src="../assets/${ship}.svg" class="drawn-ship" data-coordinate="${coordinate}" data-orientation="${orientation}" data-class="${ship}" alt="${ship} image" id="draw-${ship}" style="grid-area: ${row} / ${col} / span 1 / span ${size}; z-index: 2;">`)
-    : $("#board-placement").append(`<img src="../assets/${ship}-v.svg" class="drawn-ship" data-coordinate="${coordinate}" data-orientation="${orientation}" data-class="${ship}" alt="${ship} image" id="draw-${ship}" style="grid-area: ${row} / ${col} / span ${size} / span 1; z-index: 2;">`);
-  
+  if (tilesAreOnBoard) {
+    (orientation === "horizontal")
+      ? $("#board-placement").append(`<img src="../assets/${ship}.svg" class="drawn-ship" data-coordinate="${coordinate}" data-orientation="${orientation}" data-class="${ship}" alt="${ship} image" id="draw-${ship}" style="grid-area: ${row} / ${col} / span 1 / span ${size}; z-index: 2;">`)
+      : $("#board-placement").append(`<img src="../assets/${ship}-v.svg" class="drawn-ship" data-coordinate="${coordinate}" data-orientation="${orientation}" data-class="${ship}" alt="${ship} image" id="draw-${ship}" style="grid-area: ${row} / ${col} / span ${size} / span 1; z-index: 2;">`);
+  }
+
 };
