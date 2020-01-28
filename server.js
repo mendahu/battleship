@@ -8,7 +8,9 @@ const cookieSession = require('cookie-session');
 const bcrypt = require('bcrypt');
 const methodOverride = require('method-override');
 const bodyParser = require("body-parser");
+const { shipLibrary } = require("./scripts/class_ship");
 const { games, players, ships } = require("./scripts/data");
+const { getOccupiedTiles, areValidTiles } = require("./scripts/helpers");
 
 /*******************************
 MIDDLEWARE
@@ -56,8 +58,6 @@ app.get("/player/:playerId", (req, res) => {
 app.get("/games/:gameId", (req, res) => {
   const playerId = req.session.player_id; //gets userId from login cookie
   const gameId = req.session.game_id; //gets userId from login cookie
-  
-  console.log(players[playerId], games[gameId]);
 
   //IF the user is not logged in
   if (!playerId) {
@@ -74,8 +74,6 @@ app.get("/games/:gameId", (req, res) => {
     res.status(errorCode);
     return res.render("error", { user: undefined, errorMsg, errorCode });
   }
-
-  console.log(games[gameId].state);
 
   //check game status
   switch (games[gameId].state) {
@@ -120,6 +118,20 @@ app.get("/", (req, res) => {
 /*******************************
 POST ROUTING
 *******************************/
+
+//for validating ship placement in placement phase
+app.post("/games/shipcheck", (req, res) => {
+  const { ship, orientation, coordinate, boardSize } = req.body;
+  const size = shipLibrary[ship];
+
+  const occupiedTiles = getOccupiedTiles(coordinate, orientation, size);
+
+  const tilesAreOnBoard = areValidTiles(occupiedTiles, boardSize);
+
+  (tilesAreOnBoard)
+    ? res.json({ size, isAllowed: true })
+    : res.json({ size, isAllowed: false });
+});
 
 app.post("/register", (req, res) => {
   const { name, email, password } = req.body;

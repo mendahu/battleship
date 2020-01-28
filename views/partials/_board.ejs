@@ -1,4 +1,4 @@
-<div id="board-placement" data-board-size="<% Number(game.options.boardSize) %>" class="battleship-board container-fluid" style="grid-template-rows: repeat(<%= Number(game.boardSize) + 1 %>, 1fr [row-start]); grid-template-columns:repeat(<%= Number(game.boardSize) + 1 %>, 1fr [col-start]);">
+<div id="board-placement" data-board-size="<%= Number(game.options.boardSize) %>" class="battleship-board container-fluid" style="grid-template-rows: repeat(<%= Number(game.boardSize) + 1 %>, 1fr [row-start]); grid-template-columns:repeat(<%= Number(game.boardSize) + 1 %>, 1fr [col-start]);">
   <% for (let i = 0; i < game.options.boardSize; i++) { %>
     <div class="board-label board-row-label" id="board-row-label-<%= i %>" style="grid-area: <%= i + 2 %> / 1 / span 1 / span 1;"><%= i + 1 %></div> 
     <div class="board-label board-col-label" id="board-col-label-<%= i %>" style="grid-area: 1 / <%= i + 2 %> / span 1 / span 1;"><%= String.fromCharCode(65 + i) %></div> 

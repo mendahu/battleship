@@ -50,19 +50,6 @@ let games = {
     players[1].associateGame(newGameUid);
     return newGameUid;
   },
-
-  isOccupied: function(playerId, coord) {
-
-    this.ships[playerId].forEach(ship => {
-      console.log(this.ships);
-      ship.tiles.forEach(tile => {
-        if (tile === coord) {
-          return true;
-        }
-      });
-    });
-    return false;
-  }
 };
   
 let ships = {

@@ -7,11 +7,9 @@ $(document).ready(function() {
   });
 });
 
-occupiedTiles = [];
-
 const getShip = function() {
   const shipElement = $(".list-group-item.active");
-  return [shipElement.attr("value"), shipElement.attr("data-size")];
+  return shipElement.attr("value");
 };
   
 const getOrientation = function(ship) {
@@ -21,9 +19,7 @@ const getOrientation = function(ship) {
   
 const drawShip = function(coordinate) {
 
-  const shipData = getShip();
-  const ship = shipData[0];
-  const size = shipData[1];
+  const ship = getShip();
   const orientation = getOrientation(ship);
   const row = Number(coordinate.slice(1)) + 1;
   const col = coordinate.charCodeAt(0) - 95;
@@ -35,16 +31,24 @@ const drawShip = function(coordinate) {
   }
 
   const boardSize = $("#board-placement").attr("data-board-size");
-  const occupiedTiles = getOccupiedTiles(coordinate, orientation, size);
+  console.log($("#board-placement"));
+  console.log(boardSize);
 
-  //the conditions to allow the addition of a ship
-  const tilesAreOnBoard = areValidTiles(occupiedTiles, boardSize);
+  $.post("shipcheck", { ship, orientation, coordinate, boardSize }, function(data) {
+    return data;
+  })
+    .done(function(data) {
+      const size = data.size;
+
+      if (data.isAllowed) {
+        (orientation === "horizontal")
+          ? $("#board-placement").append(`<img src="../assets/${ship}.svg" class="drawn-ship" data-coordinate="${coordinate}" data-orientation="${orientation}" data-class="${ship}" alt="${ship} image" id="draw-${ship}" style="grid-area: ${row} / ${col} / span 1 / span ${size}; z-index: 2;">`)
+          : $("#board-placement").append(`<img src="../assets/${ship}-v.svg" class="drawn-ship" data-coordinate="${coordinate}" data-orientation="${orientation}" data-class="${ship}" alt="${ship} image" id="draw-${ship}" style="grid-area: ${row} / ${col} / span ${size} / span 1; z-index: 2;">`);
+      }
+    });
+  
+
   //const tilesAreEmpty = !games[gameId].areOccupied(playerId, occupiedTiles);
 
-  if (tilesAreOnBoard) {
-    (orientation === "horizontal")
-      ? $("#board-placement").append(`<img src="../assets/${ship}.svg" class="drawn-ship" data-coordinate="${coordinate}" data-orientation="${orientation}" data-class="${ship}" alt="${ship} image" id="draw-${ship}" style="grid-area: ${row} / ${col} / span 1 / span ${size}; z-index: 2;">`)
-      : $("#board-placement").append(`<img src="../assets/${ship}-v.svg" class="drawn-ship" data-coordinate="${coordinate}" data-orientation="${orientation}" data-class="${ship}" alt="${ship} image" id="draw-${ship}" style="grid-area: ${row} / ${col} / span ${size} / span 1; z-index: 2;">`);
-  }
 
 };
